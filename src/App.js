@@ -1,7 +1,6 @@
 import React from 'react';
-import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Route, Switch } from 'react-router-dom';
+import RecipesProvider from './context/provider';
 import Login from './pages/Login';
 
 document.getElementById('root').classList.add('root');
@@ -9,10 +8,13 @@ document.getElementById('root').classList.add('root');
 function App() {
   return (
     <div className="root">
-      <Switch>
-        <Route path="/" component={ Login } />
-        <Route path="/foods" />
-      </Switch>
+      <RecipesProvider>
+        <Switch>
+          <Route path="/" component={ Login } />
+          <Route path="/foods" />
+        </Switch>
+      </RecipesProvider>
+
     </div>
   );
 }
