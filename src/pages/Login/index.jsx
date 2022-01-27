@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Login.css';
 
-function LoginClick() {
-  localStorage.setItem('mealsToken', 1);
-  localStorage.setItem('cocktailsToken', 1);
-}
-
 function Login() {
   const [disabled, setDisabled] = useState(true);
   const [email, setEmail] = useState('');
@@ -20,6 +15,12 @@ function Login() {
 
     setDisabled(!(passwordValid && emailValid));
   }, [email, password]);
+
+  function LoginClick() {
+    localStorage.setItem('mealsToken', 1);
+    localStorage.setItem('cocktailsToken', 1);
+    localStorage.setItem('user', JSON.stringify({ email }));
+  }
 
   return (
     <div className="login">
