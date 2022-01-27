@@ -3,12 +3,11 @@ import { Route, Switch } from 'react-router-dom';
 import RecipesProvider from './context/provider';
 import Login from './pages/Login';
 import Foods from './pages/Foods';
-
-document.getElementById('root').classList.add('root');
+import './Global.css';
 
 function App() {
   return (
-    <div className="root">
+    <div className="meals">
       <RecipesProvider>
         <Switch>
           <Route exact path="/" component={ Login } />
