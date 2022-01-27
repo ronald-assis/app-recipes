@@ -11,7 +11,7 @@ function Login({ history }) {
     const minLenght = 6;
     const emailRegx = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
 
-    const passwordValid = password.length > minLenght;
+    const passwordValid = password.length >= minLenght;
     const emailValid = emailRegx.test(email);
 
     setDisabled(!(passwordValid && emailValid));
