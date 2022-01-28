@@ -4,11 +4,7 @@ import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
 import Header from '../../components/Header';
-<<<<<<< HEAD
-import Footer from '../../components/Footer';
-=======
 import RecipesContext from '../../context/context';
->>>>>>> 0a0875c (14th and 15th requirement)
 
 const types = {
   meals: {
@@ -40,14 +36,14 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
   const { searchURL } = useContext(RecipesContext);
+  console.log(searchURL);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
     const { categoriesEndPoint } = currType;
 
     globalFetch(categoriesEndPoint)
-      .then(({ [currResult]: array }) => (
-        setCategories(array ? array.slice(0, categoryLenght) : [])));
+      .then(({ [currResult]: array }) => setCategories(array.slice(0, categoryLenght)));
   }, [currType, currResult]);
 
   useEffect(() => { // get recipes with curr category or not
@@ -58,9 +54,8 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
-      .then(({ [currResult]: array }) => (
-        setRecipes(array ? array.slice(0, optionsLength) : [])));
-  }, [currType, currCategory, currResult]);
+      .then(({ [currResult]: array }) => setRecipes(array.slice(0, optionsLength)));
+  }, [currType, currCategory, currResult, searchURL]);
 
   // function notFoundAlert() {
   //   global.alert('Sorry, we haven\'t found any recipes for these filters.');
@@ -109,10 +104,9 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
           {createCategories(categories)}
         </div>
         <div className="main-list">
-          { createCards(recipes) }
+          {createCards(recipes)}
         </div>
       </div>
-      <Footer />
     </div>
   );
 }
