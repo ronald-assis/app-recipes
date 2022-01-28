@@ -1,5 +1,15 @@
-.main-recipes {
+.main-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+}
+
+.main-categories {
+  column-gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin: 15px;
+  margin-top: 20px;
+  row-gap: 10px;
 }

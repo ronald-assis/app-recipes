@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Cards from '../components/Cards';
 import './MainRecipes.css';
+import TextButton from '../components/TextButton';
 
-// const img = 'https://comoinvestir.thecap.com.br/medias/2021/05/o-que-e-dogecoin-doge-a-criptomoeda-meme.jpg';
 const types = {
   meals: {
-    endPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+    recipesEndPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+    categoriesEndPoint: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
     thumb: 'strMealThumb',
     name: 'strMeal',
   },
   drinks: {
-    endPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+    recipesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+    categoriesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
     thumb: 'strDrinkThumb',
     name: 'strDrink',
   },
@@ -19,18 +21,25 @@ const types = {
 
 function MainRecipes({ location: { pathname } }) {
   const [recipes, setRecipes] = useState([]);
+  const [categories, setCategories] = useState([]);
   const currPathname = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currPathname];
 
   useEffect(() => {
     const optionsLength = 12;
-    const { endPoint } = currType;
+    const categoryLenght = 5;
+    const { recipesEndPoint, categoriesEndPoint } = currType;
 
-    fetch(endPoint)
+    fetch(recipesEndPoint)
       .then((result) => result.json())
       .then(({ [currPathname]: array }) => setRecipes(array.slice(0, optionsLength)));
+
+    fetch(categoriesEndPoint)
+      .then((result) => result.json())
+      .then(({ [currPathname]: array }) => setCategories(array.slice(0, categoryLenght)));
   }, [currType, currPathname]);
 
+  console.log(categories);
   function createCards(list) {
     const { thumb, name } = currType;
     return list.map(({ [thumb]: img, [name]: nome }, index) => (
@@ -38,9 +47,25 @@ function MainRecipes({ location: { pathname } }) {
     ));
   }
 
+  function createCategories(list) {
+    return list.map(({ strCategory: category }) => (
+      <TextButton
+        key={ category }
+        content={ category }
+        className="category"
+        testId={ `${category}-category-filter` }
+      />
+    ));
+  }
+
   return (
     <div className="main-recipes">
-      {createCards(recipes)}
+      <div className="main-categories">
+        {createCategories(categories)}
+      </div>
+      <div className="main-list">
+        {createCards(recipes)}
+      </div>
     </div>
   );
 }
