@@ -5,13 +5,15 @@ import './MainRecipes.css';
 
 const types = {
   meals: {
-    recipesEndPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+    defaultEndPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
+    selectedEndPoint: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=',
     categoriesEndPoint: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
     thumb: 'strMealThumb',
     name: 'strMeal',
   },
   drinks: {
-    recipesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+    defaultEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
+    selectedEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=',
     categoriesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
     thumb: 'strDrinkThumb',
     name: 'strDrink',
@@ -21,24 +23,34 @@ const types = {
 function MainRecipes({ location: { pathname } }) {
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [currCategory, setCurrCategory] = useState('');
   const currPathname = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currPathname];
 
-  useEffect(() => {
-    const optionsLength = 12;
+  useEffect(() => { // get categories
     const categoryLenght = 5;
-    const { recipesEndPoint, categoriesEndPoint } = currType;
-
-    fetch(recipesEndPoint)
-      .then((result) => result.json())
-      .then(({ [currPathname]: array }) => setRecipes(array.slice(0, optionsLength)));
+    const { categoriesEndPoint } = currType;
 
     fetch(categoriesEndPoint)
       .then((result) => result.json())
       .then(({ [currPathname]: array }) => setCategories(array.slice(0, categoryLenght)));
   }, [currType, currPathname]);
 
-  console.log(categories);
+  useEffect(() => { // get recipes with curr category
+    const optionsLength = 12;
+    const { defaultEndPoint, selectedEndPoint } = currType;
+    const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+
+    fetch(URL)
+      .then((result) => result.json())
+      .then(({ [currPathname]: array }) => (
+        setRecipes(array ? array.slice(0, optionsLength) : [])));
+  }, [currType, currPathname, currCategory]);
+
+  // console.log(categories);
+  console.log(recipes);
+  console.log(currCategory);
+
   function createCards(list) {
     const { thumb, name } = currType;
     return list.map(({ [thumb]: img, [name]: nome }, index) => (
@@ -47,15 +59,19 @@ function MainRecipes({ location: { pathname } }) {
   }
 
   function createCategories(list) {
-    return list.map(({ strCategory: category }) => (
-      <input
-        type="button"
-        key={ category }
-        value={ category }
-        className="category"
-        data-testid={ `${category}-category-filter` }
-      />
-    ));
+    return list.map(({ strCategory: category }) => {
+      const useCategory = (currCategory === category) ? '' : category;
+      return (
+        <input
+          type="button"
+          key={ category }
+          value={ category }
+          className="category"
+          data-testid={ `${category}-category-filter` }
+          onClick={ () => setCurrCategory(useCategory) }
+        />
+      );
+    });
   }
 
   return (
