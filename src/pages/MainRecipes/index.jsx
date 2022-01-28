@@ -36,7 +36,7 @@ function MainRecipes({ location: { pathname } }) {
       .then(({ [currPathname]: array }) => setCategories(array.slice(0, categoryLenght)));
   }, [currType, currPathname]);
 
-  useEffect(() => { // get recipes with curr category
+  useEffect(() => { // get recipes with curr category or not
     const optionsLength = 12;
     const { defaultEndPoint, selectedEndPoint } = currType;
     const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
@@ -59,8 +59,11 @@ function MainRecipes({ location: { pathname } }) {
   }
 
   function createCategories(list) {
-    return list.map(({ strCategory: category }) => {
-      const useCategory = (currCategory === category) ? '' : category;
+    const newList = [{ strCategory: 'All' }, ...list];
+    return newList.map(({ strCategory: category }) => {
+      const useCategory = (
+        category === currCategory || category === 'All') ? '' : category;
+
       return (
         <input
           type="button"
