@@ -25,7 +25,7 @@ const types = {
   },
 };
 
-function MainRecipes({ location: { pathname } }) {
+function MainRecipes({ location: { pathname }, history: { push } }) {
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currCategory, setCurrCategory] = useState('');
@@ -62,8 +62,7 @@ function MainRecipes({ location: { pathname } }) {
         name={ name }
         key={ name + id }
         index={ index }
-        idMeal={ id }
-        path={ pathName }
+        onClick={ () => push(`/${pathName}/${id}`) }
       />
     ));
   }
@@ -102,6 +101,9 @@ function MainRecipes({ location: { pathname } }) {
 MainRecipes.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
+  }).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 
