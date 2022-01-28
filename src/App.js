@@ -1,17 +1,15 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import RecipesProvider from './context/provider';
-import Login from './pages/Login';
-import Foods from './pages/Foods';
 import './Global.css';
+import Routes from './components/Routes';
 
 function App() {
   return (
     <div className="meals">
       <RecipesProvider>
         <Switch>
-          <Route exact path="/" component={ Login } />
-          <Route exact path="/foods" component={ Foods } />
+          <Routes />
         </Switch>
       </RecipesProvider>
 
