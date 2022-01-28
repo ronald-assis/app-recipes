@@ -1,0 +1,32 @@
+header {
+  align-items: center;
+  display: flex;
+  position: fixed;
+  top: 0;
+}
+
+header .top-header a {
+  margin-left: 5px;
+}
+
+header .top-header {
+  align-items: center;
+  background-color: #c4c4c4;
+  display: flex;
+  height: 58px;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+header .header-input {
+  align-items: center;
+  background-color: #c4c4c4;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  position: fixed;
+  top: 58px;
+  width: 100%;
+}

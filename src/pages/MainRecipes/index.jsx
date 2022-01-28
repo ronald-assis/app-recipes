@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import Cards from '../components/Cards';
+import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
+import Header from '../../components/Header';
 
 const types = {
   meals: {
@@ -86,8 +87,9 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const { title } = currType;
   return (
     <div>
-      <h1 data-testid="page-title">{title}</h1>
-      <div className="main-recipes">
+      <Header showSearchButton />
+      <div className="main-recipes app-recipes">
+        <h1 data-testid="page-title">{title}</h1>
         <div className="main-categories">
           {createCategories(categories)}
         </div>
