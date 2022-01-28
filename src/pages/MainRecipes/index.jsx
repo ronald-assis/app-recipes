@@ -40,7 +40,8 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     const { categoriesEndPoint } = currType;
 
     globalFetch(categoriesEndPoint)
-      .then(({ [currResult]: array }) => setCategories(array.slice(0, categoryLenght)));
+      .then(({ [currResult]: array }) => (
+        setCategories(array ? array.slice(0, categoryLenght) : [])));
   }, [currType, currResult]);
 
   useEffect(() => { // get recipes with curr category or not
@@ -49,7 +50,8 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
-      .then(({ [currResult]: array }) => setRecipes(array.slice(0, optionsLength)));
+      .then(({ [currResult]: array }) => (
+        setRecipes(array ? array.slice(0, optionsLength) : [])));
   }, [currType, currCategory, currResult]);
 
   function createCards(list) {
