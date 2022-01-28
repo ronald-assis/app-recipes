@@ -13,6 +13,7 @@ const types = {
     nameType: 'strMeal',
     idType: 'idMeal',
     pathName: 'foods',
+    title: 'Foods',
   },
   drinks: {
     defaultEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
@@ -22,6 +23,7 @@ const types = {
     nameType: 'strDrink',
     idType: 'idDrink',
     pathName: 'drinks',
+    title: 'Drinks',
   },
 };
 
@@ -81,13 +83,17 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     });
   }
 
+  const { title } = currType;
   return (
-    <div className="main-recipes">
-      <div className="main-categories">
-        {createCategories(categories)}
-      </div>
-      <div className="main-list">
-        {createCards(recipes)}
+    <div>
+      <h1 data-testid="page-title">{title}</h1>
+      <div className="main-recipes">
+        <div className="main-categories">
+          {createCategories(categories)}
+        </div>
+        <div className="main-list">
+          {createCards(recipes)}
+        </div>
       </div>
     </div>
   );
