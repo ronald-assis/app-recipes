@@ -40,7 +40,6 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
   const { searchURL } = useContext(RecipesContext);
-  console.log(searchURL);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -63,8 +62,13 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
         setRecipes(array ? array.slice(0, optionsLength) : [])));
   }, [currType, currCategory, currResult]);
 
+  // function notFoundAlert() {
+  //   global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  // }
+
   function createCards(list) {
     const { thumbType, nameType, idType, pathName } = currType;
+    if (list.length === 1) push(`/${pathName}/${list[0][idType]}`);
     return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
       <Cards
         img={ img }
@@ -105,7 +109,7 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
           {createCategories(categories)}
         </div>
         <div className="main-list">
-          {createCards(recipes)}
+          { createCards(recipes) }
         </div>
       </div>
       <Footer />
