@@ -4,6 +4,7 @@ import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 
 const types = {
   meals: {
@@ -97,6 +98,7 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
           {createCards(recipes)}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
