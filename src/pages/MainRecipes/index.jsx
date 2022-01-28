@@ -29,6 +29,23 @@ const types = {
   },
 };
 
+function notFoundAlert() {
+  global.alert('Sorry, we haven\'t found any recipes for these filters.');
+}
+
+function createCards(list, currType, push) {
+  const { thumbType, nameType, idType, pathName } = currType;
+  if (list.length === 1) push(`/${pathName}/${list[0][idType]}`);
+  return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
+    <Cards
+      img={ img }
+      name={ name }
+      key={ name + id }
+      index={ index }
+      onClick={ () => push(`/${pathName}/${id}`) }
+    />
+  ));
+}
 function MainRecipes({ location: { pathname }, history: { push } }) {
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -36,7 +53,6 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
   const { searchURL } = useContext(RecipesContext);
-  console.log(searchURL);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -54,26 +70,9 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
-      .then(({ [currResult]: array }) => setRecipes(array.slice(0, optionsLength)));
+      .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
+        : setRecipes(array.slice(0, optionsLength))));
   }, [currType, currCategory, currResult, searchURL]);
-
-  // function notFoundAlert() {
-  //   global.alert('Sorry, we haven\'t found any recipes for these filters.');
-  // }
-
-  function createCards(list) {
-    const { thumbType, nameType, idType, pathName } = currType;
-    if (list.length === 1) push(`/${pathName}/${list[0][idType]}`);
-    return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
-      <Cards
-        img={ img }
-        name={ name }
-        key={ name + id }
-        index={ index }
-        onClick={ () => push(`/${pathName}/${id}`) }
-      />
-    ));
-  }
 
   function createCategories(list) {
     const newList = [{ strCategory: 'All' }, ...list];
@@ -104,7 +103,7 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
           {createCategories(categories)}
         </div>
         <div className="main-list">
-          {createCards(recipes)}
+          {createCards(recipes, currType, push)}
         </div>
       </div>
     </div>
