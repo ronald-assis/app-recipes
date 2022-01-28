@@ -8,15 +8,19 @@ const types = {
     defaultEndPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
     selectedEndPoint: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=',
     categoriesEndPoint: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
-    thumb: 'strMealThumb',
-    name: 'strMeal',
+    thumbType: 'strMealThumb',
+    nameType: 'strMeal',
+    idType: 'idMeal',
+    pathName: 'foods',
   },
   drinks: {
     defaultEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
     selectedEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=',
     categoriesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
-    thumb: 'strDrinkThumb',
-    name: 'strDrink',
+    thumbType: 'strDrinkThumb',
+    nameType: 'strDrink',
+    idType: 'idDrink',
+    pathName: 'drinks',
   },
 };
 
@@ -24,8 +28,8 @@ function MainRecipes({ location: { pathname } }) {
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currCategory, setCurrCategory] = useState('');
-  const currPathname = pathname.endsWith('foods') ? 'meals' : 'drinks';
-  const currType = types[currPathname];
+  const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
+  const currType = types[currResult];
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -33,8 +37,8 @@ function MainRecipes({ location: { pathname } }) {
 
     fetch(categoriesEndPoint)
       .then((result) => result.json())
-      .then(({ [currPathname]: array }) => setCategories(array.slice(0, categoryLenght)));
-  }, [currType, currPathname]);
+      .then(({ [currResult]: array }) => setCategories(array.slice(0, categoryLenght)));
+  }, [currType, currResult]);
 
   useEffect(() => { // get recipes with curr category or not
     const optionsLength = 12;
@@ -43,18 +47,26 @@ function MainRecipes({ location: { pathname } }) {
 
     fetch(URL)
       .then((result) => result.json())
-      .then(({ [currPathname]: array }) => (
+      .then(({ [currResult]: array }) => (
         setRecipes(array ? array.slice(0, optionsLength) : [])));
-  }, [currType, currPathname, currCategory]);
+  }, [currType, currCategory, currResult]);
 
+  // TODO remove this
   // console.log(categories);
   console.log(recipes);
   console.log(currCategory);
 
   function createCards(list) {
-    const { thumb, name } = currType;
-    return list.map(({ [thumb]: img, [name]: nome }, index) => (
-      <Cards img={ img } name={ nome } key={ nome } index={ index } />
+    const { thumbType, nameType, idType, pathName } = currType;
+    return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
+      <Cards
+        img={ img }
+        name={ name }
+        key={ name + id }
+        index={ index }
+        idMeal={ id }
+        path={ pathName }
+      />
     ));
   }
 
