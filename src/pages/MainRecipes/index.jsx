@@ -4,6 +4,7 @@ import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import RecipesContext from '../../context/context';
 
 const types = {
@@ -33,9 +34,9 @@ function notFoundAlert() {
   global.alert('Sorry, we haven\'t found any recipes for these filters.');
 }
 
-function createCards(list, currType, push) {
+function createCards(list, currType, push, searchURL) {
   const { thumbType, nameType, idType, pathName } = currType;
-  if (list.length === 1) push(`/${pathName}/${list[0][idType]}`);
+  if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
   return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
     <Cards
       img={ img }
@@ -103,9 +104,10 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
           {createCategories(categories)}
         </div>
         <div className="main-list">
-          {createCards(recipes, currType, push)}
+          {createCards(recipes, currType, push, searchURL)}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
