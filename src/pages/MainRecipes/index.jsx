@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
 import Header from '../../components/Header';
+<<<<<<< HEAD
 import Footer from '../../components/Footer';
+=======
+import RecipesContext from '../../context/context';
+>>>>>>> 0a0875c (14th and 15th requirement)
 
 const types = {
   meals: {
@@ -35,6 +39,8 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const [currCategory, setCurrCategory] = useState('');
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
+  const { searchURL } = useContext(RecipesContext);
+  console.log(searchURL);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -48,7 +54,9 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   useEffect(() => { // get recipes with curr category or not
     const optionsLength = 12;
     const { defaultEndPoint, selectedEndPoint } = currType;
-    const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+    let URL;
+    if (searchURL !== '') URL = searchURL;
+    else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
       .then(({ [currResult]: array }) => (
