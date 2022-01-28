@@ -13,3 +13,8 @@
   margin-top: 20px;
   row-gap: 10px;
 }
+
+.category {
+  background-color: gainsboro;
+  min-width: 31%;
+}

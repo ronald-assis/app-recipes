@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Cards from '../components/Cards';
 import './MainRecipes.css';
-import TextButton from '../components/TextButton';
 
 const types = {
   meals: {
@@ -49,11 +48,12 @@ function MainRecipes({ location: { pathname } }) {
 
   function createCategories(list) {
     return list.map(({ strCategory: category }) => (
-      <TextButton
+      <input
+        type="button"
         key={ category }
-        content={ category }
+        value={ category }
         className="category"
-        testId={ `${category}-category-filter` }
+        data-testid={ `${category}-category-filter` }
       />
     ));
   }
