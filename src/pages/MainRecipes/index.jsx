@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Cards from '../components/Cards';
 import './MainRecipes.css';
+import globalFetch from '../../services/globalFetch';
 
 const types = {
   meals: {
@@ -35,8 +36,7 @@ function MainRecipes({ location: { pathname } }) {
     const categoryLenght = 5;
     const { categoriesEndPoint } = currType;
 
-    fetch(categoriesEndPoint)
-      .then((result) => result.json())
+    globalFetch(categoriesEndPoint)
       .then(({ [currResult]: array }) => setCategories(array.slice(0, categoryLenght)));
   }, [currType, currResult]);
 
@@ -45,10 +45,8 @@ function MainRecipes({ location: { pathname } }) {
     const { defaultEndPoint, selectedEndPoint } = currType;
     const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
-    fetch(URL)
-      .then((result) => result.json())
-      .then(({ [currResult]: array }) => (
-        setRecipes(array ? array.slice(0, optionsLength) : [])));
+    globalFetch(URL)
+      .then(({ [currResult]: array }) => setRecipes(array.slice(0, optionsLength)));
   }, [currType, currCategory, currResult]);
 
   // TODO remove this
