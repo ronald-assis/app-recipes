@@ -1,8 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Login from '../pages/Login';
-import Foods from '../pages/Foods';
-import Drinks from '../pages/Drinks';
+import MainRecipes from '../pages/MainRecipes';
 import Profile from '../pages/Profile';
 import Explore from '../pages/Explore';
 import ExploreFoods from '../pages/ExploreFoods';
@@ -17,8 +16,8 @@ export default function Routes() {
   return (
     <div>
       <Route exact path="/" component={ Login } />
-      <Route exact path="/foods" component={ Foods } />
-      <Route exact path="/drinks" component={ Drinks } />
+      <Route exact path="/foods" component={ MainRecipes } />
+      <Route exact path="/drinks" component={ MainRecipes } />
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/explore" component={ Explore } />
       <Route exact path="/explore/foods" component={ ExploreFoods } />
