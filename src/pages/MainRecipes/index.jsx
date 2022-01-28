@@ -49,11 +49,6 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
       .then(({ [currResult]: array }) => setRecipes(array.slice(0, optionsLength)));
   }, [currType, currCategory, currResult]);
 
-  // TODO remove this
-  // console.log(categories);
-  console.log(recipes);
-  console.log(currCategory);
-
   function createCards(list) {
     const { thumbType, nameType, idType, pathName } = currType;
     return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
