@@ -1,22 +1,20 @@
-.recipes-datails {
+.recipes-food-datails {
   align-items: start;
   display: flex;
   flex-flow: column;
-  /* width: 95%; */
-
 }
 
-.recipes-datails .details {
+.recipes-food-datails .details {
   margin: 0 auto;
   width: 95%;
 }
 
-.recipes-datails .illustration {
-  width: 100%;
+.recipes-food-datails .illustration {
   height: 155px;
+  width: 100%;
 }
 
-.recipes-datails .foods {
+.recipes-food-datails .foods {
   align-items: center;
   display: flex;
   font-size: 14px;
@@ -24,24 +22,25 @@
   justify-content: space-between;
 }
 
-.recipes-datails p:nth-child(3) {
-  margin: 0 0 17px;
+.recipes-food-datails p:nth-child( 3 ) {
+  margin: 0 auto 17px;
+  width: 95%;
 }
 
-.recipes-datails .ingredients-and-measure {
+.recipes-food-datails .ingredients-and-measure {
   background-color: #ececec;
   display: flex;
   flex-flow: column;
-  padding: 0 10px;
+  padding: 10px;
 }
 
-.recipes-datails .instructions p {
+.recipes-food-datails .instructions p {
+  background-color: #ececec;
+  margin: 0;
   padding: 10px;
   text-align: center;
-  margin: 0;
-  background-color: #ececec;
 }
 
-.recipes-datails iframe {
+.recipes-food-datails iframe {
   width: 100%;
 }

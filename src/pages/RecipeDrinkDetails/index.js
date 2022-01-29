@@ -38,14 +38,14 @@ export default function RecipeFoodDetails() {
 
   return (
     details.map((d, i) => (
-      <div key={ i } className="recipes-datails">
+      <div key={ i } className="recipes-drink-datails">
         <img
           src={ d.strDrinkThumb }
           alt={ `${d.strDrink} illustration` }
           className="illustration"
           data-testid="recipe-photo"
         />
-        <div className="foods details">
+        <div className="drinks details">
           <h1 data-testid="recipe-title">{d.strDrink}</h1>
           <div>
             <button type="button" data-testid="share-btn">
