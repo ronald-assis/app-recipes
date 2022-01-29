@@ -24,7 +24,7 @@ function Cards({ img, name, index, onClick }) {
 Cards.propTypes = {
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import RecipesContext from '../../context/context';
 import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
@@ -35,6 +36,7 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const [currCategory, setCurrCategory] = useState('');
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
+  const { setDetailsDrinkId, setDetailsFoodId } = useContext(RecipesContext);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -55,15 +57,21 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
         setRecipes(array ? array.slice(0, optionsLength) : [])));
   }, [currType, currCategory, currResult]);
 
+  const handleClick = (p, id) => {
+    push(`/${p}/${id}`);
+    setDetailsFoodId(id);
+    setDetailsDrinkId(id);
+  };
+
   function createCards(list) {
     const { thumbType, nameType, idType, pathName } = currType;
     return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
       <Cards
         img={ img }
         name={ name }
-        key={ name + id }
         index={ index }
-        onClick={ () => push(`/${pathName}/${id}`) }
+        key={ name + id }
+        onClick={ () => handleClick(pathName, id) }
       />
     ));
   }

@@ -11,6 +11,8 @@ import ExploreFoodsByIngredients from '../pages/ExploreFoodsByIngredients';
 import ExploreFoodsNationalities from '../pages/ExploreFoodsNationalities';
 import DoneRecipes from '../pages/DoneRecipes';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
+import RecipeFoodDetails from '../pages/RecipeFoodDetails';
+import RecipeDrinkDetails from '../pages/RecipeDrinkDetails';
 
 export default function Routes() {
   return (
@@ -24,6 +26,8 @@ export default function Routes() {
       <Route exact path="/explore/drinks" component={ ExploreDrinks } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />
       <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
+      <Route exact path="/foods/:id" component={ RecipeFoodDetails } />
+      <Route exact path="/drinks/:id" component={ RecipeDrinkDetails } />
 
       <Route
         exact

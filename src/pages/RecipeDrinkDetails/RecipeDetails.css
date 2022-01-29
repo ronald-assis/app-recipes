@@ -1,0 +1,21 @@
+.recipes-datails {
+  align-items: start;
+  display: flex;
+  flex-flow: column;
+}
+
+.recipes-datails .details {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.recipes-datails .foods-or-drinks {
+  align-items: center;
+  display: flex;
+  height: 35px;
+  justify-content: space-between;
+}
+
+.recipes-datails p:nth-child(3) {
+  margin: 0 0 17px;
+}
