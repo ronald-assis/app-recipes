@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 
@@ -8,6 +7,7 @@ export default function SearchBar() {
   const [searchType, setSearchType] = useState('ingredient');
   const location = useLocation();
   const { setSearchURL } = useContext(RecipesContext);
+  const currPage = location.pathname.endsWith('foods') ? 'meal' : 'cocktail';
 
   const handleChange = ({ target }) => {
     const { value, type } = target;
@@ -16,15 +16,24 @@ export default function SearchBar() {
   };
 
   const handleClick = () => {
-    const currPage = location.pathname.endsWith('foods') ? 'meal' : 'cocktail';
     let URL;
-
     if (searchType === 'first-letter' && searchTerm.length !== 1) {
       global.alert('Your search must have only 1 (one) character');
     }
-    if (searchType === 'ingredient') URL = `https://www.the${currPage}db.com/api/json/v1/1/filter.php?i=${searchTerm}`;
-    if (searchType === 'name') URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?s=${searchTerm}`;
-    if (searchType === 'first-letter' && searchTerm.length === 1) URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?f=${searchTerm}`;
+    switch (searchType) {
+    case 'ingredient':
+      URL = `https://www.the${currPage}db.com/api/json/v1/1/filter.php?i=${searchTerm}`;
+      break;
+    case 'name':
+      URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?s=${searchTerm}`;
+      break;
+    case 'first-letter':
+      URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?f=${searchTerm}`;
+      break;
+    default:
+      global.alert('Invalid Option');
+      break;
+    }
 
     setSearchURL(URL);
   };
@@ -79,9 +88,3 @@ export default function SearchBar() {
     </div>
   );
 }
-
-SearchBar.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-};

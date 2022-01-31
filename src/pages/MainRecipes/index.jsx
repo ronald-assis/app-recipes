@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useLocation, useHistory } from 'react-router-dom';
 import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
@@ -47,7 +47,9 @@ function createCards(list, currType, push, searchURL) {
     />
   ));
 }
-function MainRecipes({ location: { pathname }, history: { push } }) {
+function MainRecipes() {
+  const { pathname } = useLocation();
+  const { push } = useHistory();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currCategory, setCurrCategory] = useState('');
@@ -60,7 +62,9 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     const { categoriesEndPoint } = currType;
 
     globalFetch(categoriesEndPoint)
-      .then(({ [currResult]: array }) => setCategories(array.slice(0, categoryLenght)));
+      .then(({ [currResult]: array }) => (
+        array ? setCategories(array.slice(0, categoryLenght)) : []
+      ));
   }, [currType, currResult]);
 
   useEffect(() => { // get recipes with curr category or not
@@ -97,9 +101,8 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
   const { title } = currType;
   return (
     <div>
-      <Header showSearchButton />
+      <Header title={ title } showSearchButton />
       <div className="main-recipes app-recipes">
-        <h1 data-testid="page-title">{title}</h1>
         <div className="main-categories">
           {createCategories(categories)}
         </div>
@@ -111,14 +114,5 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
     </div>
   );
 }
-
-MainRecipes.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default MainRecipes;
