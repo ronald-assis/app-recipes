@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Cards.css';
 
-function Cards({ img, name, index, onClick }) {
+function Cards({ img, name, index, onClick, type }) {
   return (
     <button
       type="button"
       className="card"
-      data-testid={ `${index}-recipe-card` }
+      data-testid={ `${index}-${type}-card` }
       onClick={ onClick }
     >
       <img
@@ -25,6 +25,7 @@ Cards.propTypes = {
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   index: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

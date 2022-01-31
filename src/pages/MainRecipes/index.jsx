@@ -43,6 +43,7 @@ function createCards(list, currType, push, searchURL) {
       name={ name }
       key={ name + id }
       index={ index }
+      type="recipe"
       onClick={ () => push(`/${pathName}/${id}`) }
     />
   ));

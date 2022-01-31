@@ -26,15 +26,25 @@ export default function ExploreByIngredients() {
   }, [location, key]);
 
   function createCards(array) {
-    return array.map(({ idIngredient: id, strIngredient: name }, index) => (
-      <Cards
-        img=""
-        name={ name }
-        key={ id }
-        index={ index }
-        onClick={ () => push('/') }
-      />
-    ));
+    return array.map((ingredient, index) => {
+      const name = location === 'foods'
+        ? ingredient.strIngredient
+        : ingredient.strIngredient1;
+      const URL = location === 'foods'
+        ? `https://www.themealdb.com/images/ingredients/${name}-Small.png`
+        : `https://www.thecocktaildb.com/images/ingredients/${name}-Small.png`;
+
+      return (
+        <Cards
+          type="ingredient"
+          img={ URL }
+          name={ name }
+          key={ index }
+          index={ index }
+          onClick={ () => push('/') }
+        />
+      );
+    });
   }
 
   return (
