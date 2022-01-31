@@ -5,8 +5,7 @@ import MainRecipes from '../pages/MainRecipes';
 import Profile from '../pages/Profile';
 import Explore from '../pages/Explore';
 import ExploreRecipes from '../pages/ExploreRecipes';
-import ExploreDrinksByIngredients from '../pages/ExploreDrinksByIngredients';
-import ExploreFoodsByIngredients from '../pages/ExploreFoodsByIngredients';
+import ExploreByIngredients from '../pages/ExploreByIngredients';
 import ExploreFoodsNationalities from '../pages/ExploreFoodsNationalities';
 import DoneRecipes from '../pages/DoneRecipes';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
@@ -27,12 +26,12 @@ export default function Routes() {
       <Route
         exact
         path="/explore/drinks/ingredients"
-        component={ ExploreDrinksByIngredients }
+        component={ ExploreByIngredients }
       />
       <Route
         exact
         path="/explore/foods/ingredients"
-        component={ ExploreFoodsByIngredients }
+        component={ ExploreByIngredients }
       />
       <Route
         exact
