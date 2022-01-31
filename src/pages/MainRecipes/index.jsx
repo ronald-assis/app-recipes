@@ -47,6 +47,26 @@ function createCards(list, currType, push, searchURL) {
     />
   ));
 }
+
+function createCategories(list, setCurrCategory, currCategory) {
+  const newList = [{ strCategory: 'All' }, ...list];
+  return newList.map(({ strCategory: category }) => {
+    const useCategory = (
+      category === currCategory || category === 'All') ? '' : category;
+
+    return (
+      <input
+        type="button"
+        key={ category }
+        value={ category }
+        className="category"
+        data-testid={ `${category}-category-filter` }
+        onClick={ () => setCurrCategory(useCategory) }
+      />
+    );
+  });
+}
+
 function MainRecipes() {
   const { pathname } = useLocation();
   const { push } = useHistory();
@@ -79,32 +99,13 @@ function MainRecipes() {
         : setRecipes(array.slice(0, optionsLength))));
   }, [currType, currCategory, currResult, searchURL]);
 
-  function createCategories(list) {
-    const newList = [{ strCategory: 'All' }, ...list];
-    return newList.map(({ strCategory: category }) => {
-      const useCategory = (
-        category === currCategory || category === 'All') ? '' : category;
-
-      return (
-        <input
-          type="button"
-          key={ category }
-          value={ category }
-          className="category"
-          data-testid={ `${category}-category-filter` }
-          onClick={ () => setCurrCategory(useCategory) }
-        />
-      );
-    });
-  }
-
   const { title } = currType;
   return (
     <div>
       <Header title={ title } showSearchButton />
       <div className="main-recipes app-recipes">
         <div className="main-categories">
-          {createCategories(categories)}
+          {createCategories(categories, setCurrCategory, currCategory)}
         </div>
         <div className="main-list">
           {createCards(recipes, currType, push, searchURL)}
