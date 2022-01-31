@@ -1,8 +1,6 @@
-function globalFetch(URL) {
+async function globalFetch(URL) {
   try {
-    return fetch(URL)
-      .then((result) => result.json())
-      .then((json) => json);
+    return (await fetch(URL)).json();
   } catch (e) { console.log(e); }
 }
 
