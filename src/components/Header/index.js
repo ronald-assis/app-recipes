@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import profileIcon from '../../images/profileIcon.svg';
 import searchIcon from '../../images/searchIcon.svg';
+import SearchBar from '../SearchBar';
 import './Header.css';
 
 export default function Header({ showSearchButton }) {
@@ -30,7 +31,7 @@ export default function Header({ showSearchButton }) {
       </div>
       {showSearchInput ? (
         <div className="header-input">
-          <input data-testid="search-input" />
+          <SearchBar />
         </div>
       ) : null }
     </header>
