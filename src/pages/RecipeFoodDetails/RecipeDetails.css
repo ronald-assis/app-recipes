@@ -44,3 +44,65 @@
 .recipes-food-datails iframe {
   width: 100%;
 }
+
+.recipes-food-datails .recommended {
+  margin: 0 auto 90px;
+}
+
+.recipes-food-datails .recommended .recommendation {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  overflow-x: auto;
+}
+
+.recipes-food-datails .recommendation::-webkit-scrollbar{
+  width: 0;
+}
+
+.recipes-food-datails .recommended  .recommendation-illustration {
+  border-radius: 6px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-flow: column;
+  justify-content: space-around;
+  height: 172px;
+  min-width: 162px;
+  margin: 0 20px 18px 0;
+
+}
+
+.recipes-food-datails .recommendation img {
+  border-radius: 6px 6px 0 0;
+  height: 109px;
+  margin: 0;
+  width: 100%;
+}
+
+.recipes-food-datails .recommendation p {
+  color: #A9A9A9;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  padding-left: 5px;
+}
+
+.recipes-food-datails .recommendation h3 {
+  font-size: 18px;
+  line-height: 21px;
+  margin-top: 6px;
+  padding-left: 5px;
+}
+
+
+.recipes-food-datails .start-recipe-button {
+  background-color: #6ce34f;
+  bottom: 0;
+  left: 10px;
+  font-size: 29px;
+  height: 76px;
+  line-height: 34px;
+  margin-bottom: 5px;
+  position: fixed;
+  width: 340px;
+}

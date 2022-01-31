@@ -9,12 +9,20 @@ export default function RecipeFoodDetails() {
   const { detailsDrinkId } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [id, setId] = useState('178319');
+  const [recommendations, setRecommendations] = useState([]);
   const strIngredient = [];
 
   const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+  const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
+  const RECOMMENDATIONS_NUMBER = 6;
+
   useEffect(() => {
     globalFetch(URL_DRINKS)
       .then(({ drinks }) => setDetails(drinks));
+    globalFetch(URL_RECOMMENDATIONS)
+      .then(({ meals }) => (
+        setRecommendations(meals.slice(0, RECOMMENDATIONS_NUMBER))));
     setId(detailsDrinkId);
   }, [id]);
 
@@ -82,9 +90,22 @@ export default function RecipeFoodDetails() {
 
         <div className="recommended details">
           <h3>Recommended</h3>
-          <div>
-            <p data-testid={ `${0}-recomendation-card` }>foods</p>
-            <p data-testid={ `${1}-recomendation-card` }>foods</p>
+          <div className="recommendation">
+            {recommendations.map((r, index) => (
+              <div
+                key={ index }
+                className="recommendation-illustration"
+                data-testid={ `${index}-recomendation-card` }
+              >
+                <img src={ r.strMealThumb } alt={ r.strMeal } />
+                <p>{r.strCategory}</p>
+                <h3
+                  data-testid={ `${index}-recomendation-title` }
+                >
+                  {r.strMeal}
+                </h3>
+              </div>
+            ))}
           </div>
         </div>
         <button

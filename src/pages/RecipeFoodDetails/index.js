@@ -9,15 +9,22 @@ export default function RecipeFoodDetails() {
   const { detailsFoodId } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [id, setId] = useState('52771');
+  const [recommendations, setRecommendations] = useState([]);
   const strIngredient = [];
 
   const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+  const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
+  const RECOMMENDATIONS_NUMBER = 6;
+
   useEffect(() => {
     globalFetch(URL_FOODS)
       .then(({ meals }) => setDetails(meals));
+    globalFetch(URL_RECOMMENDATIONS)
+      .then(({ drinks }) => (
+        setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
     setId(detailsFoodId);
   }, [id]);
-
+  console.log(recommendations);
   details.map((e) => (
     strIngredient.push(
       `${e.strIngredient1} -  ${e.strMeasure1}`,
@@ -36,6 +43,7 @@ export default function RecipeFoodDetails() {
     )
   ));
 
+  console.log(strIngredient);
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-food-datails">
@@ -93,9 +101,22 @@ export default function RecipeFoodDetails() {
 
         <div className="recommended details">
           <h3>Recommended</h3>
-          <div>
-            <p data-testid={ `${0}-recomendation-card` }>drinks</p>
-            <p data-testid={ `${1}-recomendation-card` }>drinks</p>
+          <div className="recommendation">
+            {recommendations.map((r, index) => (
+              <div
+                key={ index }
+                className="recommendation-illustration"
+                data-testid={ `${index}-recomendation-card` }
+              >
+                <img src={ r.strDrinkThumb } alt={ r.strDrink } />
+                <p>{r.strAlcoholic}</p>
+                <h3
+                  data-testid={ `${index}-recomendation-title` }
+                >
+                  {r.strDrink}
+                </h3>
+              </div>
+            ))}
           </div>
         </div>
         <button
