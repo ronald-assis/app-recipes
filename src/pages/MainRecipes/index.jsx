@@ -43,7 +43,6 @@ function createCards(list, currType, push, searchURL) {
       name={ name }
       key={ name + id }
       index={ index }
-      type="recipe"
       onClick={ () => push(`/${pathName}/${id}`) }
     />
   ));
@@ -73,10 +72,13 @@ function MainRecipes() {
   const { push } = useHistory();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [currCategory, setCurrCategory] = useState('');
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
-  const { searchURL } = useContext(RecipesContext);
+  const { searchURL,
+    currCategory,
+    setCurrCategory,
+    exploreURL,
+  } = useContext(RecipesContext);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -93,12 +95,13 @@ function MainRecipes() {
     const { defaultEndPoint, selectedEndPoint } = currType;
     let URL;
     if (searchURL !== '') URL = searchURL;
+    if (exploreURL !== '') URL = exploreURL;
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
       .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
         : setRecipes(array.slice(0, optionsLength))));
-  }, [currType, currCategory, currResult, searchURL]);
+  }, [currType, currCategory, currResult, searchURL, exploreURL]);
 
   const { title } = currType;
   return (
