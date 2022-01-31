@@ -95,8 +95,9 @@ function MainRecipes() {
     const { defaultEndPoint, selectedEndPoint } = currType;
     let URL;
     if (searchURL !== '') URL = searchURL;
-    if (exploreURL !== '') URL = exploreURL;
+    else if (exploreURL !== '') URL = exploreURL;
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+    console.log(URL);
 
     globalFetch(URL)
       .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
