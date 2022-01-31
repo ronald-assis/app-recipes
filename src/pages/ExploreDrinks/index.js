@@ -5,7 +5,7 @@ import Footer from '../../components/Footer';
 export default function ExploreDrinks() {
   return (
     <div className="explore-drinks app-recipes">
-      <Header showSearchButton={ false } />
+      <Header title="Explore Drinks" showSearchButton={ false } />
       <h1 data-testid="page-title">Explore Drinks</h1>
       <Footer />
     </div>
