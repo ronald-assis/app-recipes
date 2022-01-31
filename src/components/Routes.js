@@ -4,8 +4,7 @@ import Login from '../pages/Login';
 import MainRecipes from '../pages/MainRecipes';
 import Profile from '../pages/Profile';
 import Explore from '../pages/Explore';
-import ExploreFoods from '../pages/ExploreFoods';
-import ExploreDrinks from '../pages/ExploreDrinks';
+import ExploreRecipes from '../pages/ExploreRecipes';
 import ExploreDrinksByIngredients from '../pages/ExploreDrinksByIngredients';
 import ExploreFoodsByIngredients from '../pages/ExploreFoodsByIngredients';
 import ExploreFoodsNationalities from '../pages/ExploreFoodsNationalities';
@@ -20,8 +19,8 @@ export default function Routes() {
       <Route exact path="/drinks" component={ MainRecipes } />
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/explore" component={ Explore } />
-      <Route exact path="/explore/foods" component={ ExploreFoods } />
-      <Route exact path="/explore/drinks" component={ ExploreDrinks } />
+      <Route exact path="/explore/foods" component={ ExploreRecipes } />
+      <Route exact path="/explore/drinks" component={ ExploreRecipes } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />
       <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
 
