@@ -16,7 +16,9 @@ function Cards({ img, name, index, onClick }) {
         className="card-image"
         data-testid={ `${index}-card-img` }
       />
-      <div className="card-text" data-testid={ `${index}-card-name` }>{name}</div>
+      <div data-testid={ `${index}-ingredient-card` }>
+        <div className="card-text" data-testid={ `${index}-card-name` }>{name}</div>
+      </div>
     </button>
   );
 }
@@ -24,7 +26,7 @@ function Cards({ img, name, index, onClick }) {
 Cards.propTypes = {
   img: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  index: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired,
 };
 

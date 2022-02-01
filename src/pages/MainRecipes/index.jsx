@@ -48,7 +48,7 @@ function createCards(list, currType, push, searchURL) {
   ));
 }
 
-function createCategories(list, setCurrCategory, currCategory) {
+function createCategories(list, setCurrCategory, currCategory, setExploreURL) {
   const newList = [{ strCategory: 'All' }, ...list];
   return newList.map(({ strCategory: category }) => {
     const useCategory = (
@@ -61,7 +61,10 @@ function createCategories(list, setCurrCategory, currCategory) {
         value={ category }
         className="category"
         data-testid={ `${category}-category-filter` }
-        onClick={ () => setCurrCategory(useCategory) }
+        onClick={ () => {
+          setExploreURL('');
+          setCurrCategory(useCategory);
+        } }
       />
     );
   });
@@ -72,10 +75,17 @@ function MainRecipes() {
   const { push } = useHistory();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [currCategory, setCurrCategory] = useState('');
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
-  const { searchURL } = useContext(RecipesContext);
+  const { title } = currType;
+  const { searchURL,
+    currCategory,
+    setCurrCategory,
+    exploreURL,
+    setExploreURL,
+    isLoading,
+    setLoading,
+  } = useContext(RecipesContext);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -92,27 +102,33 @@ function MainRecipes() {
     const { defaultEndPoint, selectedEndPoint } = currType;
     let URL;
     if (searchURL !== '') URL = searchURL;
+    else if (exploreURL !== '') URL = exploreURL;
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+    setLoading(true);
 
     globalFetch(URL)
       .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
-        : setRecipes(array.slice(0, optionsLength))));
-  }, [currType, currCategory, currResult, searchURL]);
+        : setRecipes(array.slice(0, optionsLength))))
+      .finally(() => setLoading(false));
+  }, [currType, currCategory, currResult, searchURL, exploreURL, setLoading]);
 
-  const { title } = currType;
   return (
-    <div>
-      <Header title={ title } showSearchButton />
-      <div className="main-recipes app-recipes">
-        <div className="main-categories">
-          {createCategories(categories, setCurrCategory, currCategory)}
+    isLoading
+      ? <p>Carregando...</p>
+      : (
+        <div>
+          <Header title={ title } showSearchButton />
+          <div className="main-recipes app-recipes">
+            <div className="main-categories">
+              {createCategories(categories, setCurrCategory, currCategory, setExploreURL)}
+            </div>
+            <div className="main-list">
+              {createCards(recipes, currType, push, searchURL)}
+            </div>
+          </div>
+          <Footer />
         </div>
-        <div className="main-list">
-          {createCards(recipes, currType, push, searchURL)}
-        </div>
-      </div>
-      <Footer />
-    </div>
+      )
   );
 }
 

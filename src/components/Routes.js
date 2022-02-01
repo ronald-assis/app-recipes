@@ -1,45 +1,49 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Login from '../pages/Login';
 import MainRecipes from '../pages/MainRecipes';
 import Profile from '../pages/Profile';
 import Explore from '../pages/Explore';
-import ExploreFoods from '../pages/ExploreFoods';
-import ExploreDrinks from '../pages/ExploreDrinks';
-import ExploreDrinksByIngredients from '../pages/ExploreDrinksByIngredients';
-import ExploreFoodsByIngredients from '../pages/ExploreFoodsByIngredients';
+import ExploreRecipes from '../pages/ExploreRecipes';
+import ExploreByIngredients from '../pages/ExploreByIngredients';
 import ExploreFoodsNationalities from '../pages/ExploreFoodsNationalities';
 import DoneRecipes from '../pages/DoneRecipes';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
+import NotFound from '../pages/NotFound/NotFound';
+import Recipe from '../pages/Recipe/Recipe';
 
 export default function Routes() {
   return (
-    <div>
+    <Switch>
       <Route exact path="/" component={ Login } />
       <Route exact path="/foods" component={ MainRecipes } />
+      <Route exact path="/foods/:userid" component={ Recipe } />
+      <Route exact path="/foods/:userid/in-progress" component={ Recipe } />
       <Route exact path="/drinks" component={ MainRecipes } />
+      <Route exact path="/drinks/:userid" component={ Recipe } />
+      <Route exact path="/drinks/:userid/in-progress" component={ Recipe } />
       <Route exact path="/profile" component={ Profile } />
       <Route exact path="/explore" component={ Explore } />
-      <Route exact path="/explore/foods" component={ ExploreFoods } />
-      <Route exact path="/explore/drinks" component={ ExploreDrinks } />
+      <Route exact path="/explore/foods" component={ ExploreRecipes } />
+      <Route exact path="/explore/drinks" component={ ExploreRecipes } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />
       <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
-
       <Route
         exact
         path="/explore/drinks/ingredients"
-        component={ ExploreDrinksByIngredients }
+        component={ ExploreByIngredients }
       />
       <Route
         exact
         path="/explore/foods/ingredients"
-        component={ ExploreFoodsByIngredients }
+        component={ ExploreByIngredients }
       />
       <Route
         exact
         path="/explore/foods/nationalities"
         component={ ExploreFoodsNationalities }
       />
-    </div>
+      <Route component={ NotFound } />
+    </Switch>
   );
 }
