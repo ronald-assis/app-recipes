@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import RecipesContext from './context';
 
 function RecipesProvider({ children }) {
-  const [detailsFoodId, setDetailsFoodId] = useState('52771');
-  const [detailsDrinkId, setDetailsDrinkId] = useState('178319');
+  const [searchURL, setSearchURL] = useState('');
 
   const context = {
-    setDetailsFoodId,
-    detailsFoodId,
-    detailsDrinkId,
-    setDetailsDrinkId,
+    searchURL,
+    setSearchURL,
   };
   return (
     <RecipesContext.Provider value={ context }>

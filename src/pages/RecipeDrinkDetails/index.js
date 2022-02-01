@@ -1,48 +1,40 @@
-import React, { useContext, useState, useEffect } from 'react';
-import RecipesContext from '../../context/context';
+import React, { useState, useEffect } from 'react';
 import globalFetch from '../../services/globalFetch';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import './RecipeDetails.css';
 
-export default function RecipeFoodDetails() {
-  const { detailsDrinkId } = useContext(RecipesContext);
+export default function RecipeFoodDetails({ match }) {
   const [details, setDetails] = useState([]);
-  const [id, setId] = useState('178319');
   const [recommendations, setRecommendations] = useState([]);
-  const strIngredient = [];
-
-  const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`;
+  const [strIngredient, setStrIngredient] = useState([]);
 
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
 
   useEffect(() => {
+    const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
     globalFetch(URL_DRINKS)
       .then(({ drinks }) => setDetails(drinks));
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ meals }) => (
         setRecommendations(meals.slice(0, RECOMMENDATIONS_NUMBER))));
-    setId(detailsDrinkId);
-  }, [id]);
+  }, []);
 
-  details.map((e) => (
-    strIngredient.push(
-      `${e.strIngredient1} -  ${e.strMeasure1}`,
-      `${e.strIngredient2} -  ${e.strMeasure2}`,
-      `${e.strIngredient3} -  ${e.strMeasure3}`,
-      `${e.strIngredient4} -  ${e.strMeasure4}`,
-      `${e.strIngredient5} -  ${e.strMeasure5}`,
-      `${e.strIngredient6} -  ${e.strMeasure6}`,
-      `${e.strIngredient7} -  ${e.strMeasure7}`,
-      `${e.strIngredient8} -  ${e.strMeasure8}`,
-      `${e.strIngredient9} -  ${e.strMeasure9}`,
-      `${e.strIngredient10} -  ${e.strMeasure10}`,
-      `${e.strIngredient11} -  ${e.strMeasure11}`,
-      `${e.strIngredient12} -  ${e.strMeasure12}`,
-      `${e.strIngredient13} -  ${e.strMeasure13}`,
-    )
-  ));
+  useEffect(() => {
+    const initialStrIngredient = [];
+    const API_MAX_INGREDIENTS = 20;
+    details.forEach((meal) => {
+      for (let i = 1; i <= API_MAX_INGREDIENTS; i += 1) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+        if (ingredient) {
+          initialStrIngredient.push(`${ingredient}${measure && ` - ${measure}`}`);
+        }
+      }
+    });
+    setStrIngredient(initialStrIngredient);
+  }, [details]);
 
   return (
     details.map((d, i) => (
