@@ -1,10 +1,21 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './Profile.css';
 
 export default function Profile() {
+  const { push } = useHistory();
   const { email } = JSON.parse(localStorage.getItem('user'));
+
+  function logoutClick() {
+    push('/');
+    localStorage.removeItem('mealsToken');
+    localStorage.removeItem('cocktailsToken');
+    localStorage.removeItem('user');
+  }
+
   return (
     <div className="profile app-recipes">
       <Header title="Profile" showSearchButton={ false } />
@@ -14,6 +25,7 @@ export default function Profile() {
           type="button"
           data-testid="profile-done-btn"
           className="button-profile"
+          onClick={ () => push('/done-recipes') }
         >
           Done Recipes
         </button>
@@ -21,6 +33,7 @@ export default function Profile() {
           type="button"
           data-testid="profile-favorite-btn"
           className="button-profile"
+          onClick={ () => push('/favorite-recipes') }
         >
           Favorite Recipes
         </button>
@@ -28,6 +41,7 @@ export default function Profile() {
           type="button"
           data-testid="profile-logout-btn"
           className="button-profile"
+          onClick={ () => logoutClick() }
         >
           Logout
         </button>
