@@ -35,7 +35,6 @@ function notFoundAlert() {
 }
 
 function createCards(list, currType, push, searchURL) {
-  console.log(list);
   const { thumbType, nameType, idType, pathName } = currType;
   if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
   return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
