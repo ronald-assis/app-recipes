@@ -5,15 +5,22 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import './Profile.css';
 
+const storageKeys = [
+  'mealsToken',
+  'cocktailsToken',
+  'doneRecipes',
+  'user',
+  'favoriteRecipes',
+  'inProgressRecipes',
+];
+
 export default function Profile() {
   const { push } = useHistory();
   const { email } = JSON.parse(localStorage.getItem('user'));
 
   function logoutClick() {
     push('/');
-    localStorage.removeItem('mealsToken');
-    localStorage.removeItem('cocktailsToken');
-    localStorage.removeItem('user');
+    storageKeys.forEach((key) => localStorage.removeItem(key));
   }
 
   return (
