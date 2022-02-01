@@ -55,7 +55,9 @@ export default function ExploreByIngredients() {
   return (
     <div className="explore-by-ingredients app-recipes">
       <Header title="Explore Ingredients" showSearchButton={ false } />
-      {createCards(ingredients)}
+      <div className="main-list">
+        {createCards(ingredients)}
+      </div>
       <Footer />
     </div>
   );

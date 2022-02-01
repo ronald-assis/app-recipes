@@ -47,9 +47,18 @@ export default function ExploreRecipes() {
     );
 
     return options.map((option, index) => {
-      if (option === 'surprise') return <div key={ index }>{supriseBtn}</div>;
+      if (option === 'surprise') {
+        return (
+          <div
+            className="category"
+            key={ index }
+          >
+            {supriseBtn}
+          </div>
+        );
+      }
       return (
-        <div key={ index }>
+        <div className="category" key={ index }>
           <button
             type="button"
             id={ option }
@@ -68,7 +77,9 @@ export default function ExploreRecipes() {
   return (
     <div className="explore-drinks app-recipes">
       <Header title={ `Explore ${capitalize(location)}` } showSearchButton={ false } />
-      {renderButtons()}
+      <div className="main-categories">
+        {renderButtons()}
+      </div>
       <Footer />
     </div>
   );

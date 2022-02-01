@@ -14,7 +14,7 @@ export default function Explore() {
     const options = ['foods', 'drinks'];
 
     return options.map((option, index) => (
-      <div key={ index }>
+      <div className="category" key={ index }>
         <button
           type="button"
           id={ option }
@@ -32,7 +32,11 @@ export default function Explore() {
   return (
     <div className="explore app-recipes">
       <Header title="Explore" showSearchButton={ false } />
-      {renderButtons()}
+      <div className="main-recipes">
+        <div className="main-categories">
+          {renderButtons()}
+        </div>
+      </div>
       <Footer />
     </div>
   );

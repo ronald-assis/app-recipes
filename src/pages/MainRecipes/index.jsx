@@ -35,6 +35,7 @@ function notFoundAlert() {
 }
 
 function createCards(list, currType, push, searchURL) {
+  console.log('opa');
   const { thumbType, nameType, idType, pathName } = currType;
   if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
   return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
@@ -74,6 +75,7 @@ function MainRecipes() {
   const [categories, setCategories] = useState([]);
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
+  const { title } = currType;
   const { searchURL,
     currCategory,
     setCurrCategory,
@@ -97,14 +99,12 @@ function MainRecipes() {
     if (searchURL !== '') URL = searchURL;
     else if (exploreURL !== '') URL = exploreURL;
     else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
-    console.log(URL);
 
     globalFetch(URL)
       .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
         : setRecipes(array.slice(0, optionsLength))));
   }, [currType, currCategory, currResult, searchURL, exploreURL]);
 
-  const { title } = currType;
   return (
     <div>
       <Header title={ title } showSearchButton />

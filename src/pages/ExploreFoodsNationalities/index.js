@@ -86,7 +86,9 @@ export default function ExploreFoodsNationalities() {
     <div className="explore-foods-nationalities app-recipes">
       <Header title="Explore Nationalities" showSearchButton />
       {renderSelect(nationalities)}
-      {createCards(recipes)}
+      <div className="main-list">
+        {createCards(recipes)}
+      </div>
       <Footer />
     </div>
   );
