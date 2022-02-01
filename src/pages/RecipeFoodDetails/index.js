@@ -36,6 +36,11 @@ export default function RecipeFoodDetails({ match }) {
     setStrIngredient(initialStrIngredient);
   }, [details]);
 
+  const createEmbedYouTubeURL = (url) => {
+    const videoId = url.split('https://www.youtube.com/watch?v=')[1];
+    return `https://www.youtube.com/embed/${videoId}`;
+  };
+
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-food-datails">
@@ -85,7 +90,7 @@ export default function RecipeFoodDetails({ match }) {
           <iframe
             width="341"
             height="160"
-            src={ d.strYoutube }
+            src={ createEmbedYouTubeURL(d.strYoutube) }
             title="YouTube video player"
             allowFullScreen
           />
