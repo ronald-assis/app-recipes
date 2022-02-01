@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import globalFetch from '../../services/globalFetch';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import './RecipeDetails.css';
+import Button from '../../components/Button';
 
 export default function RecipeFoodDetails({ match }) {
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
+  const [buttonTitle, setButtonTitle] = useState('Start Recipe');
+  const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
   const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
   const RECOMMENDATIONS_NUMBER = 6;
+
+  const getLocalStorageKey = () => {
+    const continueFood = JSON.parse(
+      localStorage.getItem('inProgressRecipes') || false,
+    );
+    if (continueFood) {
+      Object.keys(continueFood.meals).filter((mealid) => (
+        (mealid === match.params.id) && (
+          setButtonTitle('Continue Recipe')
+        )
+      ));
+    }
+  };
 
   useEffect(() => {
     globalFetch(URL_FOODS)
@@ -34,11 +51,40 @@ export default function RecipeFoodDetails({ match }) {
       }
     });
     setStrIngredient(initialStrIngredient);
+    getLocalStorageKey();
+    console.log(match);
   }, [details]);
 
   const createEmbedYouTubeURL = (url) => {
     const videoId = url.split('https://www.youtube.com/watch?v=')[1];
     return `https://www.youtube.com/embed/${videoId}`;
+  };
+
+  const handleClick = () => {
+    const foodId = match.params.id;
+    const continueFood = JSON.parse(
+      localStorage.getItem('inProgressRecipes'),
+    );
+    const inProgressRecipes = {
+      meals: {
+        ...continueFood.meals,
+        [foodId]: [strIngredient],
+      },
+      cocktails: {
+        ...continueFood.cocktails,
+      },
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    getLocalStorageKey();
+    push(`/foods/${match.params.id}/in-progress`);
+  };
+
+  const shareButton = () => {
+    const URL = `http://localhost:3000${match.url}`;
+    const test = 99999;
+    URL.select();
+    URL.setSelectionRange(0, test);
+    navigator.clipboard.writeText(URL);
   };
 
   return (
@@ -50,10 +96,14 @@ export default function RecipeFoodDetails({ match }) {
           className="illustration"
           data-testid="recipe-photo"
         />
-        <div className="drinks details">
+        <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
           <div>
-            <button type="button" data-testid="share-btn">
+            <button
+              type="button"
+              onClick={ shareButton }
+              data-testid="share-btn"
+            >
               <img src={ shareIcon } alt="Share button" />
             </button>
             <button type="button" data-testid="favorite-btn">
@@ -116,13 +166,12 @@ export default function RecipeFoodDetails({ match }) {
             ))}
           </div>
         </div>
-        <button
-          type="button"
-          className="start-recipe-button details"
-          data-testid="start-recipe-btn"
-        >
-          Start Recipe
-        </button>
+
+        <Button
+          title={ buttonTitle }
+          dataTestid="start-recipe-btn"
+          handleClick={ handleClick }
+        />
       </div>
 
     ))

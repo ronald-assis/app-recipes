@@ -1,16 +1,34 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import globalFetch from '../../services/globalFetch';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import './RecipeDetails.css';
+import Button from '../../components/Button';
 
 export default function RecipeFoodDetails({ match }) {
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
+  const [buttonTitle, setButtonTitle] = useState('Start Recipe');
+  const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
+
+  const getLocalStorageKey = () => {
+    const continueDrink = JSON.parse(
+      localStorage.getItem('inProgressRecipes') || false,
+    );
+    console.log(continueDrink);
+    if (continueDrink) {
+      Object.keys(continueDrink.cocktails).filter((cocktailid) => (
+        (cocktailid === match.params.id) && (
+          setButtonTitle('Continue Recipe')
+        )
+      ));
+    }
+  };
 
   useEffect(() => {
     const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
@@ -34,7 +52,27 @@ export default function RecipeFoodDetails({ match }) {
       }
     });
     setStrIngredient(initialStrIngredient);
+    getLocalStorageKey();
   }, [details]);
+
+  const handleClick = () => {
+    const drinkId = match.params.id;
+    const continueDrink = JSON.parse(
+      localStorage.getItem('inProgressRecipes'),
+    );
+    const inProgressRecipes = {
+      meals: {
+        ...continueDrink.meals,
+      },
+      cocktails: {
+        ...continueDrink.cocktails,
+        [drinkId]: [strIngredient],
+      },
+    };
+    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
+    getLocalStorageKey();
+    push(`/drinks/${match.params.id}/in-progress`);
+  };
 
   return (
     details.map((d, i) => (
@@ -100,13 +138,11 @@ export default function RecipeFoodDetails({ match }) {
             ))}
           </div>
         </div>
-        <button
-          type="button"
-          className="start-recipe-button details"
-          data-testid="start-recipe-btn"
-        >
-          Start Recipe
-        </button>
+        <Button
+          title={ buttonTitle }
+          dataTestid="start-recipe-btn"
+          handleClick={ handleClick }
+        />
       </div>
 
     ))
