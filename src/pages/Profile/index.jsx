@@ -14,9 +14,12 @@ const storageKeys = [
   'inProgressRecipes',
 ];
 
+const deafultEmail = 'your@email.com';
+
 export default function Profile() {
   const { push } = useHistory();
-  const { email } = JSON.parse(localStorage.getItem('user'));
+  const user = localStorage.getItem('user');
+  const email = user ? JSON.parse(localStorage.getItem('user')).email : deafultEmail;
 
   function logoutClick() {
     push('/');
