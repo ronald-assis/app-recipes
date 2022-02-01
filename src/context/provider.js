@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import RecipesContext from './context';
 
 function RecipesProvider({ children }) {
-  const context = {};
+  const [searchURL, setSearchURL] = useState('');
+  const context = {
+    searchURL,
+    setSearchURL,
+  };
 
   return (
     <RecipesContext.Provider value={ context }>

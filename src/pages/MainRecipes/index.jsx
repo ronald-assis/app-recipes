@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import Cards from '../../components/Cards';
 import './MainRecipes.css';
 import globalFetch from '../../services/globalFetch';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import RecipesContext from '../../context/context';
 
 const types = {
   meals: {
@@ -29,12 +30,52 @@ const types = {
   },
 };
 
-function MainRecipes({ location: { pathname }, history: { push } }) {
+function notFoundAlert() {
+  global.alert('Sorry, we haven\'t found any recipes for these filters.');
+}
+
+function createCards(list, currType, push, searchURL) {
+  const { thumbType, nameType, idType, pathName } = currType;
+  if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
+  return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
+    <Cards
+      img={ img }
+      name={ name }
+      key={ name + id }
+      index={ index }
+      onClick={ () => push(`/${pathName}/${id}`) }
+    />
+  ));
+}
+
+function createCategories(list, setCurrCategory, currCategory) {
+  const newList = [{ strCategory: 'All' }, ...list];
+  return newList.map(({ strCategory: category }) => {
+    const useCategory = (
+      category === currCategory || category === 'All') ? '' : category;
+
+    return (
+      <input
+        type="button"
+        key={ category }
+        value={ category }
+        className="category"
+        data-testid={ `${category}-category-filter` }
+        onClick={ () => setCurrCategory(useCategory) }
+      />
+    );
+  });
+}
+
+function MainRecipes() {
+  const { pathname } = useLocation();
+  const { push } = useHistory();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currCategory, setCurrCategory] = useState('');
   const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
   const currType = types[currResult];
+  const { searchURL } = useContext(RecipesContext);
 
   useEffect(() => { // get categories
     const categoryLenght = 5;
@@ -42,76 +83,37 @@ function MainRecipes({ location: { pathname }, history: { push } }) {
 
     globalFetch(categoriesEndPoint)
       .then(({ [currResult]: array }) => (
-        setCategories(array ? array.slice(0, categoryLenght) : [])));
+        array ? setCategories(array.slice(0, categoryLenght)) : []
+      ));
   }, [currType, currResult]);
 
   useEffect(() => { // get recipes with curr category or not
     const optionsLength = 12;
     const { defaultEndPoint, selectedEndPoint } = currType;
-    const URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+    let URL;
+    if (searchURL !== '') URL = searchURL;
+    else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
 
     globalFetch(URL)
-      .then(({ [currResult]: array }) => (
-        setRecipes(array ? array.slice(0, optionsLength) : [])));
-  }, [currType, currCategory, currResult]);
-
-  function createCards(list) {
-    const { thumbType, nameType, idType, pathName } = currType;
-    return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
-      <Cards
-        img={ img }
-        name={ name }
-        key={ name + id }
-        index={ index }
-        onClick={ () => push(`/${pathName}/${id}`) }
-      />
-    ));
-  }
-
-  function createCategories(list) {
-    const newList = [{ strCategory: 'All' }, ...list];
-    return newList.map(({ strCategory: category }) => {
-      const useCategory = (
-        category === currCategory || category === 'All') ? '' : category;
-
-      return (
-        <input
-          type="button"
-          key={ category }
-          value={ category }
-          className="category"
-          data-testid={ `${category}-category-filter` }
-          onClick={ () => setCurrCategory(useCategory) }
-        />
-      );
-    });
-  }
+      .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
+        : setRecipes(array.slice(0, optionsLength))));
+  }, [currType, currCategory, currResult, searchURL]);
 
   const { title } = currType;
   return (
     <div>
-      <Header showSearchButton />
+      <Header title={ title } showSearchButton />
       <div className="main-recipes app-recipes">
-        <h1 data-testid="page-title">{title}</h1>
         <div className="main-categories">
-          {createCategories(categories)}
+          {createCategories(categories, setCurrCategory, currCategory)}
         </div>
         <div className="main-list">
-          {createCards(recipes)}
+          {createCards(recipes, currType, push, searchURL)}
         </div>
       </div>
       <Footer />
     </div>
   );
 }
-
-MainRecipes.propTypes = {
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default MainRecipes;

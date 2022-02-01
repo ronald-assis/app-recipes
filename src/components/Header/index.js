@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import profileIcon from '../../images/profileIcon.svg';
 import searchIcon from '../../images/searchIcon.svg';
+import SearchBar from '../SearchBar';
 import './Header.css';
 
-export default function Header({ showSearchButton }) {
+export default function Header({ showSearchButton, title }) {
   const [showSearchInput, setShowSearchInput] = useState(false);
   return (
     <header>
@@ -16,7 +17,7 @@ export default function Header({ showSearchButton }) {
         >
           <img src={ profileIcon } alt="User button" />
         </a>
-        <h1 data-testid="page-title">Foods</h1>
+        <h1 data-testid="page-title">{title}</h1>
         { showSearchButton && (
           <button
             type="button"
@@ -30,7 +31,7 @@ export default function Header({ showSearchButton }) {
       </div>
       {showSearchInput ? (
         <div className="header-input">
-          <input data-testid="search-input" />
+          <SearchBar />
         </div>
       ) : null }
     </header>
@@ -39,4 +40,5 @@ export default function Header({ showSearchButton }) {
 
 Header.propTypes = {
   showSearchButton: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 };
