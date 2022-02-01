@@ -5,38 +5,70 @@ import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 
 function createTags(list) {
-  return list.map((tag) => (
-    <div className="tags" key={ tag }>{tag}</div>
+  return list.map((tag, index) => (
+    <div
+      data-testid={ `${index}-${tag}-horizontal-tag` }
+      className="tags"
+      key={ tag }
+    >
+      {tag}
+    </div>
   ));
 }
 
-function DetailCards({ category, name, data, img, tags }) {
-  const buttons = (
+function DetailCards({ category, name, data, img, tags, index }) {
+  const icons = (
     <div className="buttons">
-      <img src={ shareIcon } alt="Share Icon" />
+      <img
+        data-testid={ `${index}-horizontal-share-btn` }
+        src={ shareIcon }
+        alt="Share Icon"
+      />
       <img src={ blackHeart } alt="Black Heart" />
     </div>);
 
   const miniShareIcon = (
     <div style={ { position: 'relative' } }>
-      <img className="float" src={ shareIcon } alt="Share Icon" />
+      <img
+        data-testid={ `${index}-horizontal-share-btn` }
+        className="float"
+        src={ shareIcon }
+        alt="Share Icon"
+      />
     </div>
   );
 
-  const load = !!data;
+  const info = (
+    <div>
+      <div data-testid={ `${index}-horizontal-done-date` }>
+        {`Done in: ${data}`}
+      </div>
+      <div className="tags-container">{createTags(tags)}</div>
+    </div>
+  );
+
+  const details = !!data;
   return (
     <div>
-      {load && miniShareIcon}
+      {details && miniShareIcon}
       <div className="detail-card">
         <div className="image-container">
-          <img className="image" src={ img } alt="dogecoin" />
+          <img
+            className="image"
+            data-testid={ `${index}-horizontal-image` }
+            src={ img }
+            alt="dogecoin"
+          />
         </div>
         <div className="info">
-          <div className="detail-category">{category}</div>
-          <h2>{name}</h2>
-          {load && <div>{`Done in: ${data}`}</div>}
-          {!load && buttons}
-          {load && <div className="tags-container">{createTags(tags)}</div> }
+          <div
+            className="detail-category"
+            data-testid={ `${index}-horizontal-top-text` }
+          >
+            {category}
+          </div>
+          <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
+          {details ? info : icons}
         </div>
       </div>
     </div>
@@ -46,9 +78,10 @@ function DetailCards({ category, name, data, img, tags }) {
 DetailCards.propTypes = {
   category: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  data: PropTypes.string,
   img: PropTypes.string.isRequired,
+  index: PropTypes.number.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string.isRequired),
+  data: PropTypes.string,
 };
 
 DetailCards.defaultProps = {
