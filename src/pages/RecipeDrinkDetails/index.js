@@ -11,6 +11,7 @@ export default function RecipeFoodDetails({ match }) {
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
+  const [copiedMessage, setCopiedMessage] = useState(false);
   const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -74,6 +75,12 @@ export default function RecipeFoodDetails({ match }) {
     push(`/drinks/${match.params.id}/in-progress`);
   };
 
+  const shareButton = () => {
+    const URL = `http://localhost:3000${match.url}`;
+    navigator.clipboard.writeText(URL);
+    setCopiedMessage(true);
+  };
+
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-drink-datails">
@@ -85,9 +92,15 @@ export default function RecipeFoodDetails({ match }) {
         />
         <div className="drinks details">
           <h1 data-testid="recipe-title">{d.strDrink}</h1>
-          <div>
-            <button type="button" data-testid="share-btn">
+          <div className="share-and-favorite">
+            <button
+              type="button"
+              className="share-btn"
+              onClick={ shareButton }
+              data-testid="share-btn"
+            >
               <img src={ shareIcon } alt="Share button" />
+              {copiedMessage && <span>Link copied!</span>}
             </button>
             <button type="button" data-testid="favorite-btn">
               <img src={ whiteHeartIcon } alt="favorite button" />

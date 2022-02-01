@@ -11,6 +11,7 @@ export default function RecipeFoodDetails({ match }) {
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
+  const [copiedMessage, setCopiedMessage] = useState(false);
   const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
@@ -52,7 +53,6 @@ export default function RecipeFoodDetails({ match }) {
     });
     setStrIngredient(initialStrIngredient);
     getLocalStorageKey();
-    console.log(match);
   }, [details]);
 
   const createEmbedYouTubeURL = (url) => {
@@ -81,10 +81,8 @@ export default function RecipeFoodDetails({ match }) {
 
   const shareButton = () => {
     const URL = `http://localhost:3000${match.url}`;
-    const test = 99999;
-    URL.select();
-    URL.setSelectionRange(0, test);
     navigator.clipboard.writeText(URL);
+    setCopiedMessage(true);
   };
 
   return (
@@ -98,13 +96,15 @@ export default function RecipeFoodDetails({ match }) {
         />
         <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
-          <div>
+          <div className="share-and-favorite">
             <button
               type="button"
+              className="share-btn"
               onClick={ shareButton }
               data-testid="share-btn"
             >
               <img src={ shareIcon } alt="Share button" />
+              {copiedMessage && <span>Link copied!</span>}
             </button>
             <button type="button" data-testid="favorite-btn">
               <img src={ whiteHeartIcon } alt="favorite button" />
