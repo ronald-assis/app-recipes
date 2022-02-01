@@ -35,7 +35,6 @@ function notFoundAlert() {
 }
 
 function createCards(list, currType, push, searchURL) {
-  console.log('opa');
   const { thumbType, nameType, idType, pathName } = currType;
   if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
   return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
@@ -49,7 +48,7 @@ function createCards(list, currType, push, searchURL) {
   ));
 }
 
-function createCategories(list, setCurrCategory, currCategory) {
+function createCategories(list, setCurrCategory, currCategory, setExploreURL) {
   const newList = [{ strCategory: 'All' }, ...list];
   return newList.map(({ strCategory: category }) => {
     const useCategory = (
@@ -62,7 +61,10 @@ function createCategories(list, setCurrCategory, currCategory) {
         value={ category }
         className="category"
         data-testid={ `${category}-category-filter` }
-        onClick={ () => setCurrCategory(useCategory) }
+        onClick={ () => {
+          setExploreURL('');
+          setCurrCategory(useCategory);
+        } }
       />
     );
   });
@@ -80,6 +82,7 @@ function MainRecipes() {
     currCategory,
     setCurrCategory,
     exploreURL,
+    setExploreURL,
   } = useContext(RecipesContext);
 
   useEffect(() => { // get categories
@@ -110,7 +113,7 @@ function MainRecipes() {
       <Header title={ title } showSearchButton />
       <div className="main-recipes app-recipes">
         <div className="main-categories">
-          {createCategories(categories, setCurrCategory, currCategory)}
+          {createCategories(categories, setCurrCategory, currCategory, setExploreURL)}
         </div>
         <div className="main-list">
           {createCards(recipes, currType, push, searchURL)}
