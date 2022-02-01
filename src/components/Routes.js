@@ -9,6 +9,7 @@ import ExploreByIngredients from '../pages/ExploreByIngredients';
 import ExploreFoodsNationalities from '../pages/ExploreFoodsNationalities';
 import DoneRecipes from '../pages/DoneRecipes';
 import FavoriteRecipes from '../pages/FavoriteRecipes';
+import NotFound from '../pages/NotFound/NotFound';
 
 export default function Routes() {
   return (
@@ -22,7 +23,6 @@ export default function Routes() {
       <Route exact path="/explore/drinks" component={ ExploreRecipes } />
       <Route exact path="/done-recipes" component={ DoneRecipes } />
       <Route exact path="/favorite-recipes" component={ FavoriteRecipes } />
-
       <Route
         exact
         path="/explore/drinks/ingredients"
@@ -38,6 +38,7 @@ export default function Routes() {
         path="/explore/foods/nationalities"
         component={ ExploreFoodsNationalities }
       />
+      <Route component={ NotFound } />
     </div>
   );
 }
