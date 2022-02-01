@@ -23,13 +23,13 @@
 }
 
 .recipes-drink-datails .share-and-favorite {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .recipes-drink-datails .share-btn {
-  display: flex;
   align-items: center;
+  display: flex;
   flex-flow: column;
 }
 
@@ -56,20 +56,20 @@
   margin: 0 auto 80px;
 }
 
-.recipes-drink-datails .recommended .recommendation {
-  display: flex;
-  margin: auto;
-  width: 100%;
-  overflow-x: auto;
-}
-
-.recipes-drink-datails .recommendation::-webkit-scrollbar{
+.recipes-drink-datails .recommendation::-webkit-scrollbar {
   width: 0;
 }
 
-.recipes-drink-datails .recommended  .recommendation-illustration {
+.recipes-drink-datails .recommended .recommendation {
+  display: flex;
+  margin: auto;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.recipes-drink-datails .recommended .recommendation-illustration {
   border-radius: 6px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-flow: column;
   height: 172px;
@@ -85,7 +85,7 @@
 }
 
 .recipes-drink-datails .recommendation p {
-  color: #A9A9A9;
+  color: darkgray;
   font-size: 15px;
   line-height: 18px;
   margin: 0;
