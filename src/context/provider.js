@@ -6,6 +6,7 @@ function RecipesProvider({ children }) {
   const [currCategory, setCurrCategory] = useState('');
   const [searchURL, setSearchURL] = useState('');
   const [exploreURL, setExploreURL] = useState('');
+  const [isLoading, setLoading] = useState(false);
   const context = {
     searchURL,
     setSearchURL,
@@ -13,6 +14,8 @@ function RecipesProvider({ children }) {
     setCurrCategory,
     exploreURL,
     setExploreURL,
+    isLoading,
+    setLoading,
   };
 
   return (
