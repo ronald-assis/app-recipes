@@ -9,7 +9,7 @@ import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
 import Button from '../../components/Button';
 
-export default function RecipeFoodDetails({ match }) {
+export default function RecipeDrinkDetails({ match }) {
   const drinkId = match.params.id;
   const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
