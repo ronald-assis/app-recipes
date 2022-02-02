@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import shareIcon from '../../images/shareIcon.svg';
 import './ShareAndFavorite.css';
 
 export default function ShareAndFavorite({
-  shareButton, shareIcon,
-  copiedMessage, handleFavoriteColor,
+  url,
+  handleFavoriteColor,
   favoriteColor,
 }) {
+  const [copiedMessage, setCopiedMessage] = useState(false);
+
+  const shareButton = () => {
+    const URL = `http://localhost:3000${url}`;
+    navigator.clipboard.writeText(URL);
+    setCopiedMessage(true);
+  };
+
   return (
     <div className="share-and-favorite">
       <button
@@ -31,9 +40,7 @@ export default function ShareAndFavorite({
 }
 
 ShareAndFavorite.propTypes = {
-  shareButton: PropTypes.func.isRequired,
-  shareIcon: PropTypes.string.isRequired,
-  copiedMessage: PropTypes.bool.isRequired,
+  url: PropTypes.string.isRequired,
   handleFavoriteColor: PropTypes.func.isRequired,
   favoriteColor: PropTypes.string.isRequired,
 };

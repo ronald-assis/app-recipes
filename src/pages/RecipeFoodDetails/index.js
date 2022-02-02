@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 import globalFetch from '../../services/globalFetch';
-import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
@@ -16,7 +15,6 @@ export default function RecipeFoodDetails({ match }) {
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
-  const [copiedMessage, setCopiedMessage] = useState(false);
   const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
   const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
@@ -93,12 +91,6 @@ export default function RecipeFoodDetails({ match }) {
     push(`/foods/${foodId}/in-progress`);
   };
 
-  const shareButton = () => {
-    const URL = `http://localhost:3000${match.url}`;
-    navigator.clipboard.writeText(URL);
-    setCopiedMessage(true);
-  };
-
   const handleFavoriteColor = () => {
     if (favoriteColor === whiteHeartIcon) {
       setFavoriteColor(blackHeartIcon);
@@ -127,9 +119,7 @@ export default function RecipeFoodDetails({ match }) {
         <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
           <ShareAndFavorite
-            shareButton={ shareButton }
-            shareIcon={ shareIcon }
-            copiedMessage={ copiedMessage }
+            url={ match.url }
             handleFavoriteColor={ handleFavoriteColor }
             favoriteColor={ favoriteColor }
           />
