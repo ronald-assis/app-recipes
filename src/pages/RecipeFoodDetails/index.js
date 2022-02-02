@@ -22,16 +22,18 @@ export default function RecipeFoodDetails({ match }) {
   const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-  const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
   const RECOMMENDATIONS_NUMBER = 6;
 
   useEffect(() => {
+    if (foodId === '52977') return;
+    const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
+    console.log(URL_RECOMMENDATIONS, URL_FOODS);
     globalFetch(URL_FOODS)
       .then(({ meals }) => setDetails(meals));
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
-  }, [URL_FOODS]);
+  }, [foodId]);
 
   useEffect(() => {
     const initialStrIngredient = [];
@@ -162,6 +164,9 @@ export default function RecipeFoodDetails({ match }) {
             height="160"
             src={ createEmbedYouTubeURL(d.strYoutube) }
             title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write;
+              encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
           />
         </div>

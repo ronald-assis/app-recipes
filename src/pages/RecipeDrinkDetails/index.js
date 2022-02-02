@@ -21,18 +21,17 @@ export default function RecipeDrinkDetails({ match }) {
   const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
 
-  const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
-
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
 
   useEffect(() => {
+    const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
     globalFetch(URL_DRINKS)
       .then(({ drinks }) => setDetails(drinks));
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ meals }) => (
         setRecommendations(meals.slice(0, RECOMMENDATIONS_NUMBER))));
-  }, [URL_DRINKS]);
+  }, [drinkId]);
 
   useEffect(() => {
     const initialStrIngredient = [];
