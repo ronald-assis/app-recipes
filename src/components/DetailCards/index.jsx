@@ -4,8 +4,8 @@ import './DetailCards.css';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 
-function createTags(list) {
-  return list.map((tag, index) => (
+function createTags(list, index) {
+  return list.map((tag) => (
     <div
       data-testid={ `${index}-${tag}-horizontal-tag` }
       className="tags"
@@ -43,7 +43,7 @@ function DetailCards({ category, name, data, img, tags, index }) {
       <div data-testid={ `${index}-horizontal-done-date` }>
         {`Done in: ${data}`}
       </div>
-      <div className="tags-container">{createTags(tags)}</div>
+      <div className="tags-container">{createTags(tags, index)}</div>
     </div>
   );
 
