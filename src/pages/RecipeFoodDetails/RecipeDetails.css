@@ -1,0 +1,95 @@
+.recipes-food-datails {
+  align-items: start;
+  display: flex;
+  flex-flow: column;
+}
+
+.recipes-food-datails .details {
+  margin: 0 auto;
+  width: 95%;
+}
+
+.recipes-food-datails .illustration {
+  height: 155px;
+  width: 100%;
+}
+
+.recipes-food-datails .foods {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  height: 35px;
+  justify-content: space-between;
+}
+
+.recipes-food-datails p:nth-child( 3 ) {
+  margin: 0 auto 17px;
+  width: 95%;
+}
+
+.recipes-food-datails .ingredients-and-measure {
+  background-color: #ececec;
+  display: flex;
+  flex-flow: column;
+  padding: 10px;
+}
+
+.recipes-food-datails .instructions p {
+  background-color: #ececec;
+  margin: 0;
+  padding: 10px;
+  text-align: center;
+}
+
+.recipes-food-datails iframe {
+  width: 100%;
+}
+
+.recipes-food-datails .recommended {
+  margin: 0 auto 90px;
+}
+
+.recipes-food-datails .recommendation::-webkit-scrollbar {
+  width: 0;
+}
+
+.recipes-food-datails .recommended .recommendation {
+  display: flex;
+  margin: auto;
+  overflow-x: auto;
+  width: 100%;
+}
+
+.recipes-food-datails .recommended .recommendation-illustration {
+  border-radius: 6px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-flow: column;
+  height: 172px;
+  justify-content: space-around;
+  margin: 0 20px 18px 0;
+  min-width: 162px;
+
+}
+
+.recipes-food-datails .recommendation img {
+  border-radius: 6px 6px 0 0;
+  height: 109px;
+  margin: 0;
+  width: 100%;
+}
+
+.recipes-food-datails .recommendation p {
+  color: darkgray;
+  font-size: 15px;
+  line-height: 18px;
+  margin: 0;
+  padding-left: 5px;
+}
+
+.recipes-food-datails .recommendation h3 {
+  font-size: 18px;
+  line-height: 21px;
+  margin-top: 6px;
+  padding-left: 5px;
+}
