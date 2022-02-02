@@ -10,6 +10,7 @@ import './RecipeDetails.css';
 import Button from '../../components/Button';
 
 export default function RecipeFoodDetails({ match }) {
+  const drinkId = match.params.id;
   const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -20,67 +21,58 @@ export default function RecipeFoodDetails({ match }) {
   const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
 
+  const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
+
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
 
-  const getLocalStorageInProgressKey = () => {
-    Object.keys(inProg.cocktails).filter((cocktailid) => (
-      (cocktailid === match.params.id) && (
-        setButtonTitle('Continue Recipe')
-      )
-    ));
-  };
-
-  const getLocalStorageFavoriteKey = () => {
-    fvtRec.forEach((favorite) => {
-      if (favorite.id === match.params.id) {
-        setFavoriteColor(blackHeartIcon);
-      }
-    });
-  };
-
-  const createFavoriteObj = (drink) => {
-    const fvtObj = {
-      id: match.params.id,
-      type: 'drink',
-      nationality: drink.strArea || '',
-      category: drink.strCategory,
-      alcoholicOrNot: drink.strAlcoholic,
-      name: drink.strDrink,
-      image: drink.strDrinkThumb,
-    };
-    setFavoriteObj(fvtObj);
-  };
-
   useEffect(() => {
-    const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
     globalFetch(URL_DRINKS)
       .then(({ drinks }) => setDetails(drinks));
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ meals }) => (
         setRecommendations(meals.slice(0, RECOMMENDATIONS_NUMBER))));
-  }, []);
+  }, [URL_DRINKS]);
 
   useEffect(() => {
     const initialStrIngredient = [];
     const API_MAX_INGREDIENTS = 20;
-    details.forEach((meal) => {
+    details.forEach((drink) => {
       for (let i = 1; i <= API_MAX_INGREDIENTS; i += 1) {
-        const ingredient = meal[`strIngredient${i}`];
-        const measure = meal[`strMeasure${i}`];
-        if (ingredient) {
-          initialStrIngredient.push(`${ingredient}${measure && ` - ${measure}`}`);
-        }
+        const ingredient = drink[`strIngredient${i}`];
+        const measure = drink[`strMeasure${i}`];
+        if (ingredient === null) break;
+        initialStrIngredient.push(`${ingredient}${measure && ` - ${measure}`}`);
       }
-      createFavoriteObj(meal);
+      const fvtObj = {
+        id: drinkId,
+        type: 'drink',
+        nationality: drink.strArea || '',
+        category: drink.strCategory,
+        alcoholicOrNot: drink.strAlcoholic,
+        name: drink.strDrink,
+        image: drink.strDrinkThumb,
+      };
+      setFavoriteObj(fvtObj);
     });
     setStrIngredient(initialStrIngredient);
-    getLocalStorageInProgressKey();
-    getLocalStorageFavoriteKey();
-  }, [details]);
+  }, [details, drinkId]);
+
+  useEffect(() => {
+    Object.keys(inProg.cocktails).some((cocktailid) => (
+      (cocktailid === drinkId) && (
+        setButtonTitle('Continue Recipe')
+      )
+    ));
+
+    fvtRec.forEach((favorite) => {
+      if (favorite.id === drinkId) {
+        setFavoriteColor(blackHeartIcon);
+      }
+    });
+  }, [drinkId, fvtRec, inProg.cocktails]);
 
   const handleClick = () => {
-    const drinkId = match.params.id;
     const inProgressRecipes = {
       meals: {
         ...inProg.meals,
@@ -91,8 +83,7 @@ export default function RecipeFoodDetails({ match }) {
       },
     };
     setInProg(inProgressRecipes);
-    getLocalStorageInProgressKey();
-    push(`/drinks/${match.params.id}/in-progress`);
+    push(`/drinks/${drinkId}/in-progress`);
   };
 
   const shareButton = () => {
@@ -112,7 +103,7 @@ export default function RecipeFoodDetails({ match }) {
     }
     if (favoriteColor === blackHeartIcon) {
       setFavoriteColor(whiteHeartIcon);
-      const removeFavote = fvtRec.filter(({ id }) => id !== match.params.id);
+      const removeFavote = fvtRec.filter(({ id }) => id !== drinkId);
       setFvtRec(removeFavote);
     }
   };

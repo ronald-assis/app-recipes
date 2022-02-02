@@ -10,6 +10,7 @@ import Button from '../../components/Button';
 import ShareAndFavorite from '../../components/ShareAndFavorite';
 
 export default function RecipeFoodDetails({ match }) {
+  const foodId = match.params.id;
   const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
@@ -21,37 +22,8 @@ export default function RecipeFoodDetails({ match }) {
   const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
-  const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
+  const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
   const RECOMMENDATIONS_NUMBER = 6;
-
-  const getLocalStorageInProgressKey = () => {
-    Object.keys(inProg.meals).filter((mealid) => (
-      (mealid === match.params.id) && (
-        setButtonTitle('Continue Recipe')
-      )
-    ));
-  };
-
-  const getLocalStorageFavoriteKey = () => {
-    fvtRec.forEach((favorite) => {
-      if (favorite.id === match.params.id) {
-        setFavoriteColor(blackHeartIcon);
-      }
-    });
-  };
-
-  const createFavoriteObj = (meal) => {
-    const fvtObj = {
-      id: match.params.id,
-      type: 'food',
-      nationality: meal.strArea || '',
-      category: meal.strCategory,
-      alcoholicOrNot: '',
-      name: meal.strMeal,
-      image: meal.strMealThumb,
-    };
-    setFavoriteObj(fvtObj);
-  };
 
   useEffect(() => {
     globalFetch(URL_FOODS)
@@ -59,8 +31,7 @@ export default function RecipeFoodDetails({ match }) {
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
-    console.log(fvtRec.filter(({ id }) => id !== match.params.id));
-  }, []);
+  }, [URL_FOODS]);
 
   useEffect(() => {
     const initialStrIngredient = [];
@@ -73,12 +44,32 @@ export default function RecipeFoodDetails({ match }) {
           initialStrIngredient.push(`${ingredient} - ${measure}`);
         }
       }
-      createFavoriteObj(meal);
+      const fvtObj = {
+        id: foodId,
+        type: 'food',
+        nationality: meal.strArea || '',
+        category: meal.strCategory,
+        alcoholicOrNot: '',
+        name: meal.strMeal,
+        image: meal.strMealThumb,
+      };
+      setFavoriteObj(fvtObj);
     });
     setStrIngredient(initialStrIngredient);
-    getLocalStorageInProgressKey();
-    getLocalStorageFavoriteKey();
-  }, [details]);
+  }, [details, foodId]);
+
+  useEffect(() => {
+    Object.keys(inProg.meals).some((mealid) => (
+      (mealid === foodId) && (
+        setButtonTitle('Continue Recipe')
+      )
+    ));
+    fvtRec.forEach((favorite) => {
+      if (favorite.id === foodId) {
+        setFavoriteColor(blackHeartIcon);
+      }
+    });
+  }, [foodId, fvtRec, inProg.meals]);
 
   const createEmbedYouTubeURL = (url) => {
     const videoId = url.split('https://www.youtube.com/watch?v=')[1];
@@ -86,7 +77,6 @@ export default function RecipeFoodDetails({ match }) {
   };
 
   const handleClick = () => {
-    const foodId = match.params.id;
     const inProgressRecipes = {
       meals: {
         ...inProg.meals,
@@ -97,8 +87,7 @@ export default function RecipeFoodDetails({ match }) {
       },
     };
     setInProg(inProgressRecipes);
-    getLocalStorageInProgressKey();
-    push(`/foods/${match.params.id}/in-progress`);
+    push(`/foods/${foodId}/in-progress`);
   };
 
   const shareButton = () => {
@@ -118,7 +107,7 @@ export default function RecipeFoodDetails({ match }) {
     }
     if (favoriteColor === blackHeartIcon) {
       setFavoriteColor(whiteHeartIcon);
-      const removeFavote = fvtRec.filter(({ id }) => id !== match.params.id);
+      const removeFavote = fvtRec.filter(({ id }) => id !== foodId);
       setFvtRec(removeFavote);
     }
   };
