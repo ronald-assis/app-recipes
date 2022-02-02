@@ -50,7 +50,7 @@ function DetailCards({ category, name, img, index, data, tags }) {
     </div>
   );
 
-  const details = !!(data && tags[0]);
+  const details = !(!data && !tags[0]);
   return (
     <div>
       {details && miniShareIcon}
