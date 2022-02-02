@@ -1,34 +1,56 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import RecipesContext from '../../context/context';
 import globalFetch from '../../services/globalFetch';
 import shareIcon from '../../images/shareIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
 import Button from '../../components/Button';
+import ShareAndFavorite from '../../components/ShareAndFavorite';
 
 export default function RecipeFoodDetails({ match }) {
+  const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
   const [copiedMessage, setCopiedMessage] = useState(false);
+  const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
+  const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
   const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${match.params.id}`;
   const RECOMMENDATIONS_NUMBER = 6;
 
-  const getLocalStorageKey = () => {
-    const continueFood = JSON.parse(
-      localStorage.getItem('inProgressRecipes') || false,
-    );
-    if (continueFood) {
-      Object.keys(continueFood.meals).filter((mealid) => (
-        (mealid === match.params.id) && (
-          setButtonTitle('Continue Recipe')
-        )
-      ));
-    }
+  const getLocalStorageInProgressKey = () => {
+    Object.keys(inProg.meals).filter((mealid) => (
+      (mealid === match.params.id) && (
+        setButtonTitle('Continue Recipe')
+      )
+    ));
+  };
+
+  const getLocalStorageFavoriteKey = () => {
+    fvtRec.forEach((favorite) => {
+      if (favorite.id === match.params.id) {
+        setFavoriteColor(blackHeartIcon);
+      }
+    });
+  };
+
+  const createFavoriteObj = (meal) => {
+    const fvtObj = {
+      id: match.params.id,
+      type: 'food',
+      nationality: meal.strArea || '',
+      category: meal.strCategory,
+      alcoholicOrNot: '',
+      name: meal.strMeal,
+      image: meal.strMealThumb,
+    };
+    setFavoriteObj(fvtObj);
   };
 
   useEffect(() => {
@@ -37,6 +59,7 @@ export default function RecipeFoodDetails({ match }) {
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
+    console.log(fvtRec.filter(({ id }) => id !== match.params.id));
   }, []);
 
   useEffect(() => {
@@ -50,9 +73,11 @@ export default function RecipeFoodDetails({ match }) {
           initialStrIngredient.push(`${ingredient} - ${measure}`);
         }
       }
+      createFavoriteObj(meal);
     });
     setStrIngredient(initialStrIngredient);
-    getLocalStorageKey();
+    getLocalStorageInProgressKey();
+    getLocalStorageFavoriteKey();
   }, [details]);
 
   const createEmbedYouTubeURL = (url) => {
@@ -62,20 +87,17 @@ export default function RecipeFoodDetails({ match }) {
 
   const handleClick = () => {
     const foodId = match.params.id;
-    const continueFood = JSON.parse(
-      localStorage.getItem('inProgressRecipes'),
-    );
     const inProgressRecipes = {
       meals: {
-        ...continueFood.meals,
+        ...inProg.meals,
         [foodId]: [strIngredient],
       },
       cocktails: {
-        ...continueFood.cocktails,
+        ...inProg.cocktails,
       },
     };
-    localStorage.setItem('inProgressRecipes', JSON.stringify(inProgressRecipes));
-    getLocalStorageKey();
+    setInProg(inProgressRecipes);
+    getLocalStorageInProgressKey();
     push(`/foods/${match.params.id}/in-progress`);
   };
 
@@ -83,6 +105,22 @@ export default function RecipeFoodDetails({ match }) {
     const URL = `http://localhost:3000${match.url}`;
     navigator.clipboard.writeText(URL);
     setCopiedMessage(true);
+  };
+
+  const handleFavoriteColor = () => {
+    if (favoriteColor === whiteHeartIcon) {
+      setFavoriteColor(blackHeartIcon);
+      const favoriteRecipes = [
+        ...fvtRec,
+        favoriteObj,
+      ];
+      setFvtRec(favoriteRecipes);
+    }
+    if (favoriteColor === blackHeartIcon) {
+      setFavoriteColor(whiteHeartIcon);
+      const removeFavote = fvtRec.filter(({ id }) => id !== match.params.id);
+      setFvtRec(removeFavote);
+    }
   };
 
   return (
@@ -96,20 +134,13 @@ export default function RecipeFoodDetails({ match }) {
         />
         <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
-          <div className="share-and-favorite">
-            <button
-              type="button"
-              className="share-btn"
-              onClick={ shareButton }
-              data-testid="share-btn"
-            >
-              <img src={ shareIcon } alt="Share button" />
-              {copiedMessage && <span>Link copied!</span>}
-            </button>
-            <button type="button" data-testid="favorite-btn">
-              <img src={ whiteHeartIcon } alt="favorite button" />
-            </button>
-          </div>
+          <ShareAndFavorite
+            shareButton={ shareButton }
+            shareIcon={ shareIcon }
+            copiedMessage={ copiedMessage }
+            handleFavoriteColor={ handleFavoriteColor }
+            favoriteColor={ favoriteColor }
+          />
         </div>
         <p className="details" data-testid="recipe-category">{d.strCategory}</p>
 

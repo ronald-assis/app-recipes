@@ -1,0 +1,10 @@
+.share-and-favorite {
+  align-items: center;
+  display: flex;
+}
+
+.share-and-favorite .share-btn {
+  align-items: center;
+  display: flex;
+  flex-flow: column;
+}
