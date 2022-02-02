@@ -27,7 +27,6 @@ export default function RecipeFoodDetails({ match }) {
   useEffect(() => {
     if (foodId === '52977') return;
     const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
-    console.log(URL_RECOMMENDATIONS, URL_FOODS);
     globalFetch(URL_FOODS)
       .then(({ meals }) => setDetails(meals));
     globalFetch(URL_RECOMMENDATIONS)
