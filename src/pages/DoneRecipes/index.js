@@ -61,25 +61,43 @@ export default function DoneRecipes() {
         />
       </div>
       <div>
-        {doneRecipesData.map(({
-          image,
-          category,
-          name,
-          tags,
-          doneDate,
-          nationality,
-        }, index) => (
-          <DetailCards
-            type
-            img={ image }
-            category={ `${category}-${nationality}` }
-            name={ name }
-            tags={ tags }
-            index={ index }
-            key={ name + index }
-            data={ doneDate }
-          />
-        ))}
+        {doneRecipesData.filter((item) => item.type === 'food')
+          .map(({
+            image,
+            category,
+            name,
+            tags,
+            doneDate,
+            nationality,
+          }, index) => (
+            <DetailCards
+              img={ image }
+              category={ `${nationality} - ${category}` }
+              name={ name }
+              tags={ tags }
+              index={ index }
+              key={ name + index }
+              data={ doneDate }
+            />
+          ))}
+      </div>
+      <div>
+        {doneRecipesData.filter((item) => item.type === 'drink')
+          .map(({
+            image,
+            alcoholicOrNot,
+            name,
+            doneDate,
+          }, i) => (
+            <DetailCards
+              img={ image }
+              category={ alcoholicOrNot }
+              name={ name }
+              index={ i }
+              key={ name + i }
+              data={ doneDate }
+            />
+          ))}
       </div>
     </div>
   );
