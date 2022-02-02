@@ -25,10 +25,12 @@ export default function RecipeFoodDetails({ match }) {
   const RECOMMENDATIONS_NUMBER = 6;
 
   useEffect(() => {
-    if (foodId === '52977') return;
     const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
     globalFetch(URL_FOODS)
-      .then(({ meals }) => setDetails(meals));
+      .then((data) => {
+        if (data === 'error') return;
+        setDetails(data.meals);
+      });
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));

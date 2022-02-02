@@ -3,7 +3,10 @@ async function globalFetch(URL) {
     const requist = await fetch(URL);
     const response = await requist.json();
     return response;
-  } catch (e) { console.log(e); }
+  } catch (e) {
+    console.log(e);
+    return 'error';
+  }
 }
 
 export default globalFetch;
