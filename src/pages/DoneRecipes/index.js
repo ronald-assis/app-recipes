@@ -1,18 +1,32 @@
 import React from 'react';
 import Header from '../../components/Header';
+import DetailCards from '../../components/DetailCards';
 
 export default function DoneRecipes() {
-  let doneRecipesData = [{
-    id: 'id-da-receita',
-    type: 'comida-ou-bebida',
-    nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-    category: 'categoria-da-receita-ou-texto-vazio',
-    alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-    name: 'nome-da-receita',
-    image: 'imagem-da-receita',
-    doneDate: 'quando-a-receita-foi-concluida',
-    tags: 'array-de-tags-da-receita-ou-array-vazio',
-  }];
+  let doneRecipesData = [
+    {
+      id: '52771',
+      type: 'food',
+      nationality: 'Italian',
+      category: 'Vegetarian',
+      alcoholicOrNot: '',
+      name: 'Spicy Arrabiata Penne',
+      image: 'https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg',
+      doneDate: '23/06/2020',
+      tags: ['Pasta', 'Curry'],
+    },
+    {
+      id: '178319',
+      type: 'drink',
+      nationality: '',
+      category: 'Cocktail',
+      alcoholicOrNot: 'Alcoholic',
+      name: 'Aquamarine',
+      image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
+      doneDate: '23/06/2020',
+      tags: [],
+    },
+  ];
 
   localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesData));
   const doneRecipesGet = localStorage.getItem('doneRecipes');
@@ -41,10 +55,31 @@ export default function DoneRecipes() {
 
         <input
           type="button"
-          value="Drink"
+          value="Drinks"
           data-testid="filter-by-drink-btn"
           className="category"
         />
+      </div>
+      <div>
+        {doneRecipesData.map(({
+          image,
+          category,
+          name,
+          tags,
+          doneDate,
+          nationality,
+        }, index) => (
+          <DetailCards
+            type
+            img={ image }
+            category={ `${category}-${nationality}` }
+            name={ name }
+            tags={ tags }
+            index={ index }
+            key={ name + index }
+            data={ doneDate }
+          />
+        ))}
       </div>
     </div>
   );
