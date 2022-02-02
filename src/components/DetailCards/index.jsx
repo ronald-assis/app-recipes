@@ -16,7 +16,10 @@ function createTags(list, index) {
   ));
 }
 
-function DetailCards({ category, name, data, img, tags, index }) {
+// the following props are necessary: 'category', 'name', 'img', 'index'.
+// you WILL need to pass 'data' && 'tags' props in the DoneRecipes page
+// and the inverse goes to the FavoritesRecipes page
+function DetailCards({ category, name, img, index, data, tags }) {
   const icons = (
     <div className="buttons">
       <img
@@ -47,7 +50,7 @@ function DetailCards({ category, name, data, img, tags, index }) {
     </div>
   );
 
-  const details = !!data;
+  const details = !!(data && tags[0]);
   return (
     <div>
       {details && miniShareIcon}
