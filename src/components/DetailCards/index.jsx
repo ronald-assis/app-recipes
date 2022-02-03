@@ -108,7 +108,7 @@ DetailCards.propTypes = {
   img: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string.isRequired),
   data: PropTypes.string,
 };

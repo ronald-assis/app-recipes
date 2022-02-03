@@ -32,6 +32,8 @@ export default function DoneRecipes() {
   const doneRecipesGet = localStorage.getItem('doneRecipes');
   doneRecipesData = JSON.parse(doneRecipesGet);
 
+  const [filter, setFilter] = React.useState('all'); // Add Filter
+
   return (
     <div className="done-recipes">
       <Header
@@ -45,12 +47,14 @@ export default function DoneRecipes() {
           value="All"
           data-testid="filter-by-all-btn"
           className="category"
+          onClick={ () => setFilter('all') } // Add Filter
         />
         <input
           type="button"
           value="Food"
           data-testid="filter-by-food-btn"
           className="category"
+          onClick={ () => setFilter('food') } // Add Filter
         />
 
         <input
@@ -58,27 +62,43 @@ export default function DoneRecipes() {
           value="Drinks"
           data-testid="filter-by-drink-btn"
           className="category"
+          onClick={ () => setFilter('drink') } // Add Filter
         />
       </div>
       <div>
-        {doneRecipesData.map(({
-          image,
-          category,
-          name,
-          tags,
-          doneDate,
-          nationality,
-          type,
-          id,
-          alcoholicOrNot,
-        }, index) => {
-          if (type === 'food') {
+        {doneRecipesData
+          .filter((value) => value.type === filter || filter === 'all') // Add Filter
+          .map(({
+            image,
+            category,
+            name,
+            tags,
+            doneDate,
+            nationality,
+            type,
+            id,
+            alcoholicOrNot,
+          }, index) => {
+            if (type === 'food') {
+              return (
+                <DetailCards
+                  img={ image }
+                  category={ `${nationality} - ${category}` }
+                  name={ name }
+                  tags={ tags }
+                  index={ index }
+                  key={ name + index }
+                  data={ doneDate }
+                  id={ id }
+                  type={ type }
+                />
+              );
+            }
             return (
               <DetailCards
                 img={ image }
-                category={ `${nationality} - ${category}` }
+                category={ alcoholicOrNot }
                 name={ name }
-                tags={ tags }
                 index={ index }
                 key={ name + index }
                 data={ doneDate }
@@ -86,20 +106,7 @@ export default function DoneRecipes() {
                 type={ type }
               />
             );
-          }
-          return (
-            <DetailCards
-              img={ image }
-              category={ alcoholicOrNot }
-              name={ name }
-              index={ index }
-              key={ name + index }
-              data={ doneDate }
-              id={ id }
-              type={ type }
-            />
-          );
-        })}
+          })}
       </div>
     </div>
   );
