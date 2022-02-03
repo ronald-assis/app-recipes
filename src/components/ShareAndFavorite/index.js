@@ -7,18 +7,18 @@ import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './ShareAndFavorite.css';
 
 export default function ShareAndFavorite({
-  url, recipeId,
+  recipeId,
 }) {
   const [copiedMessage, setCopiedMessage] = useState(false);
-  // const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
   const {
     fvtRec, setFvtRec,
     favoriteObj,
     favoriteColor, setFavoriteColor,
+    urlToBeCopied,
   } = useContext(RecipesContext);
 
   const shareButton = () => {
-    const URL = `http://localhost:3000${url}`;
+    const URL = `http://localhost:3000${urlToBeCopied}`;
     navigator.clipboard.writeText(URL);
     setCopiedMessage(true);
   };
@@ -63,6 +63,5 @@ export default function ShareAndFavorite({
 }
 
 ShareAndFavorite.propTypes = {
-  url: PropTypes.string.isRequired,
   recipeId: PropTypes.string.isRequired,
 };

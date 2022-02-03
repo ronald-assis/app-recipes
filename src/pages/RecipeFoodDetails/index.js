@@ -9,6 +9,7 @@ import ShareAndFavorite from '../../components/ShareAndFavorite';
 
 export default function RecipeFoodDetails({ match }) {
   const foodId = match.params.id;
+  const pageURL = match.url;
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
@@ -19,6 +20,7 @@ export default function RecipeFoodDetails({ match }) {
     fvtRec,
     setFavoriteObj,
     setFavoriteColor,
+    setUrlToBeCopied,
   } = useContext(RecipesContext);
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
@@ -34,6 +36,7 @@ export default function RecipeFoodDetails({ match }) {
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
+    setUrlToBeCopied(pageURL);
   }, [foodId]);
 
   useEffect(() => {
@@ -43,9 +46,8 @@ export default function RecipeFoodDetails({ match }) {
       for (let i = 1; i <= API_MAX_INGREDIENTS; i += 1) {
         const ingredient = meal[`strIngredient${i}`];
         const measure = meal[`strMeasure${i}`];
-        if (ingredient && measure) {
-          initialStrIngredient.push(`${ingredient} - ${measure}`);
-        }
+        if (ingredient === '') break;
+        initialStrIngredient.push(`${ingredient} - ${measure}`);
       }
       const fvtObj = {
         id: foodId,
@@ -105,7 +107,6 @@ export default function RecipeFoodDetails({ match }) {
         <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
           <ShareAndFavorite
-            url={ match.url }
             recipeId={ foodId }
           />
         </div>

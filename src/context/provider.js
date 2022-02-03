@@ -16,6 +16,7 @@ function RecipesProvider({ children }) {
   const [isLoading, setLoading] = useState(false);
   const [favoriteObj, setFavoriteObj] = useState({});
   const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
+  const [urlToBeCopied, setUrlToBeCopied] = useState('');
 
   const context = {
     searchURL,
@@ -34,6 +35,8 @@ function RecipesProvider({ children }) {
     setFavoriteObj,
     favoriteColor,
     setFavoriteColor,
+    urlToBeCopied,
+    setUrlToBeCopied,
   };
   return (
     <RecipesContext.Provider value={ context }>

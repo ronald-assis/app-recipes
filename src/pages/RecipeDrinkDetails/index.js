@@ -9,6 +9,7 @@ import Button from '../../components/Button';
 
 export default function RecipeDrinkDetails({ match }) {
   const drinkId = match.params.id;
+  const pageURL = match.url;
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
@@ -19,6 +20,7 @@ export default function RecipeDrinkDetails({ match }) {
     fvtRec,
     setFavoriteObj,
     setFavoriteColor,
+    setUrlToBeCopied,
   } = useContext(RecipesContext);
 
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
@@ -34,7 +36,8 @@ export default function RecipeDrinkDetails({ match }) {
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ meals }) => (
         setRecommendations(meals.slice(0, RECOMMENDATIONS_NUMBER))));
-  }, [drinkId]);
+    setUrlToBeCopied(pageURL);
+  }, [drinkId, pageURL, setUrlToBeCopied]);
 
   useEffect(() => {
     const initialStrIngredient = [];
@@ -100,7 +103,6 @@ export default function RecipeDrinkDetails({ match }) {
         <div className="drinks details">
           <h1 data-testid="recipe-title">{d.strDrink}</h1>
           <ShareAndFavorite
-            url={ match.url }
             recipeId={ drinkId }
           />
         </div>
