@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './DetailCards.css';
 import { Link } from 'react-router-dom'; // ADD LINK
+import copy from 'clipboard-copy'; // ADD CLIPBOARD COPY
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 
@@ -18,9 +19,17 @@ function createTags(list, index) {
 }
 
 function DetailCards({ category, name, img, index, data, tags, type, id }) {
+  const [isSharedURL, setIsSharedURL] = React.useState(false); // ADD COPY TO CLIPBOARD
+
+  function handleShareClick() { // ADD COPY TO CLIPBOARD
+    copy(`${window.location.origin}/foods/${id}`);
+    setIsSharedURL(true);
+  }
+
   const icons = (
     <div className="buttons">
       <button // turn img to button
+        onClick={ handleShareClick } // ADD COPY TO CLIPBOARD
         type="button"
       >
         <img
@@ -38,6 +47,7 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
     <div style={ { position: 'relative' } }>
       <button // turn img to button
         type="button"
+        onClick={ handleShareClick } // ADD COPY TO CLIPBOARD
       >
         <img
           data-testid={ `${index}-horizontal-share-btn` }
@@ -47,6 +57,7 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
           alt="Share Icon"
         />
       </button>
+      {isSharedURL && <span>Link copied!</span>}
     </div>
   );
 
