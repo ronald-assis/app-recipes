@@ -32,7 +32,7 @@ export default function DoneRecipes() {
   const doneRecipesGet = localStorage.getItem('doneRecipes');
   doneRecipesData = JSON.parse(doneRecipesGet);
 
-  const [filter, setFilter] = React.useState('all'); // Add Filter
+  const [filter, setFilter] = React.useState('all');
 
   return (
     <div className="done-recipes">
@@ -47,14 +47,14 @@ export default function DoneRecipes() {
           value="All"
           data-testid="filter-by-all-btn"
           className="category"
-          onClick={ () => setFilter('all') } // Add Filter
+          onClick={ () => setFilter('all') }
         />
         <input
           type="button"
           value="Food"
           data-testid="filter-by-food-btn"
           className="category"
-          onClick={ () => setFilter('food') } // Add Filter
+          onClick={ () => setFilter('food') }
         />
 
         <input
@@ -62,12 +62,12 @@ export default function DoneRecipes() {
           value="Drinks"
           data-testid="filter-by-drink-btn"
           className="category"
-          onClick={ () => setFilter('drink') } // Add Filter
+          onClick={ () => setFilter('drink') }
         />
       </div>
       <div>
         {doneRecipesData
-          .filter((value) => value.type === filter || filter === 'all') // Add Filter
+          .filter((value) => value.type === filter || filter === 'all')
           .map(({
             image,
             category,

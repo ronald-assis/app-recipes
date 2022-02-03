@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './DetailCards.css';
-import { Link } from 'react-router-dom'; // ADD LINK
-import copy from 'clipboard-copy'; // ADD CLIPBOARD COPY
+import { Link } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 
@@ -19,22 +19,22 @@ function createTags(list, index) {
 }
 
 function DetailCards({ category, name, img, index, data, tags, type, id }) {
-  const [isSharedURL, setIsSharedURL] = React.useState(false); // ADD COPY TO CLIPBOARD
+  const [isSharedURL, setIsSharedURL] = React.useState(false);
 
-  function handleShareClick() { // ADD COPY TO CLIPBOARD
+  function handleShareClick() {
     copy(`${window.location.origin}/foods/${id}`);
     setIsSharedURL(true);
   }
 
   const icons = (
     <div className="buttons">
-      <button // turn img to button
-        onClick={ handleShareClick } // ADD COPY TO CLIPBOARD
+      <button
+        onClick={ handleShareClick }
         type="button"
       >
         <img
           data-testid={ `${index}-horizontal-share-btn` }
-          id={ `${index}-horizontal-share-btn` } // Add ID
+          id={ `${index}-horizontal-share-btn` }
           src={ shareIcon }
           alt="Share Icon"
           type="button"
@@ -45,13 +45,13 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
 
   const miniShareIcon = (
     <div style={ { position: 'relative' } }>
-      <button // turn img to button
+      <button
         type="button"
-        onClick={ handleShareClick } // ADD COPY TO CLIPBOARD
+        onClick={ handleShareClick }
       >
         <img
           data-testid={ `${index}-horizontal-share-btn` }
-          id={ `${index}-horizontal-share-btn` } // Add ID
+          id={ `${index}-horizontal-share-btn` }
           className="float"
           src={ shareIcon }
           alt="Share Icon"
