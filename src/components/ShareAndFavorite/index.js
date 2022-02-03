@@ -1,19 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
+import RecipesContext from '../../context/context';
 import shareIcon from '../../images/shareIcon.svg';
+import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
+import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './ShareAndFavorite.css';
 
 export default function ShareAndFavorite({
-  url,
-  handleFavoriteColor,
-  favoriteColor,
+  url, recipeId,
 }) {
   const [copiedMessage, setCopiedMessage] = useState(false);
+  // const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
+  const {
+    fvtRec, setFvtRec,
+    favoriteObj,
+    favoriteColor, setFavoriteColor,
+  } = useContext(RecipesContext);
 
   const shareButton = () => {
     const URL = `http://localhost:3000${url}`;
     navigator.clipboard.writeText(URL);
     setCopiedMessage(true);
+  };
+
+  const handleFavoriteColor = () => {
+    if (favoriteColor === whiteHeartIcon) {
+      setFavoriteColor(blackHeartIcon);
+      const favoriteRecipes = [
+        ...fvtRec,
+        favoriteObj,
+      ];
+      setFvtRec(favoriteRecipes);
+    }
+    if (favoriteColor === blackHeartIcon) {
+      setFavoriteColor(whiteHeartIcon);
+      const removeFavote = fvtRec.filter(({ id }) => id !== recipeId);
+      setFvtRec(removeFavote);
+    }
   };
 
   return (
@@ -41,6 +64,5 @@ export default function ShareAndFavorite({
 
 ShareAndFavorite.propTypes = {
   url: PropTypes.string.isRequired,
-  handleFavoriteColor: PropTypes.func.isRequired,
-  favoriteColor: PropTypes.string.isRequired,
+  recipeId: PropTypes.string.isRequired,
 };

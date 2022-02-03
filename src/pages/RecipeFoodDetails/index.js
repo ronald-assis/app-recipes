@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 import globalFetch from '../../services/globalFetch';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
 import Button from '../../components/Button';
@@ -10,14 +9,17 @@ import ShareAndFavorite from '../../components/ShareAndFavorite';
 
 export default function RecipeFoodDetails({ match }) {
   const foodId = match.params.id;
-  const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
-  const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
-  const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
+  const {
+    inProg, setInProg,
+    fvtRec,
+    setFavoriteObj,
+    setFavoriteColor,
+  } = useContext(RecipesContext);
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
@@ -57,7 +59,7 @@ export default function RecipeFoodDetails({ match }) {
       setFavoriteObj(fvtObj);
     });
     setStrIngredient(initialStrIngredient);
-  }, [details, foodId]);
+  }, [details, foodId, setFavoriteObj]);
 
   useEffect(() => {
     Object.keys(inProg.meals).some((mealid) => (
@@ -70,7 +72,7 @@ export default function RecipeFoodDetails({ match }) {
         setFavoriteColor(blackHeartIcon);
       }
     });
-  }, [foodId, fvtRec, inProg.meals]);
+  }, [foodId, fvtRec, inProg.meals, setFavoriteColor]);
 
   const createEmbedYouTubeURL = (url) => {
     const videoId = url.split('https://www.youtube.com/watch?v=')[1];
@@ -91,22 +93,6 @@ export default function RecipeFoodDetails({ match }) {
     push(`/foods/${foodId}/in-progress`);
   };
 
-  const handleFavoriteColor = () => {
-    if (favoriteColor === whiteHeartIcon) {
-      setFavoriteColor(blackHeartIcon);
-      const favoriteRecipes = [
-        ...fvtRec,
-        favoriteObj,
-      ];
-      setFvtRec(favoriteRecipes);
-    }
-    if (favoriteColor === blackHeartIcon) {
-      setFavoriteColor(whiteHeartIcon);
-      const removeFavote = fvtRec.filter(({ id }) => id !== foodId);
-      setFvtRec(removeFavote);
-    }
-  };
-
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-food-datails">
@@ -120,8 +106,7 @@ export default function RecipeFoodDetails({ match }) {
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
           <ShareAndFavorite
             url={ match.url }
-            handleFavoriteColor={ handleFavoriteColor }
-            favoriteColor={ favoriteColor }
+            recipeId={ foodId }
           />
         </div>
         <p className="details" data-testid="recipe-category">{d.strCategory}</p>

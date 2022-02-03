@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import RecipesContext from './context';
 import useLocalStorage from '../hooks/useLocalStorage';
+import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 const inProgressRecipes = { meals: {}, cocktails: {} };
 const favoriteRecipes = [];
@@ -13,6 +14,9 @@ function RecipesProvider({ children }) {
   const [searchURL, setSearchURL] = useState('');
   const [exploreURL, setExploreURL] = useState('');
   const [isLoading, setLoading] = useState(false);
+  const [favoriteObj, setFavoriteObj] = useState({});
+  const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
+
   const context = {
     searchURL,
     setSearchURL,
@@ -26,6 +30,10 @@ function RecipesProvider({ children }) {
     setInProg,
     fvtRec,
     setFvtRec,
+    favoriteObj,
+    setFavoriteObj,
+    favoriteColor,
+    setFavoriteColor,
   };
   return (
     <RecipesContext.Provider value={ context }>

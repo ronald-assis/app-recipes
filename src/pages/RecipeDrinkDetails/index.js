@@ -3,21 +3,23 @@ import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 import globalFetch from '../../services/globalFetch';
 import ShareAndFavorite from '../../components/ShareAndFavorite';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
 import Button from '../../components/Button';
 
 export default function RecipeDrinkDetails({ match }) {
   const drinkId = match.params.id;
-  const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
-  const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
-  const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
+  const {
+    inProg, setInProg,
+    fvtRec,
+    setFavoriteObj,
+    setFavoriteColor,
+  } = useContext(RecipesContext);
 
   const URL_RECOMMENDATIONS = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
@@ -56,7 +58,7 @@ export default function RecipeDrinkDetails({ match }) {
       setFavoriteObj(fvtObj);
     });
     setStrIngredient(initialStrIngredient);
-  }, [details, drinkId]);
+  }, [details, drinkId, setFavoriteObj]);
 
   useEffect(() => {
     Object.keys(inProg.cocktails).some((cocktailid) => (
@@ -70,7 +72,7 @@ export default function RecipeDrinkDetails({ match }) {
         setFavoriteColor(blackHeartIcon);
       }
     });
-  }, [drinkId, fvtRec, inProg.cocktails]);
+  }, [drinkId, fvtRec, inProg.cocktails, setFavoriteColor]);
 
   const handleClick = () => {
     const inProgressRecipes = {
@@ -86,22 +88,6 @@ export default function RecipeDrinkDetails({ match }) {
     push(`/drinks/${drinkId}/in-progress`);
   };
 
-  const handleFavoriteColor = () => {
-    if (favoriteColor === whiteHeartIcon) {
-      setFavoriteColor(blackHeartIcon);
-      const favoriteRecipes = [
-        ...fvtRec,
-        favoriteObj,
-      ];
-      setFvtRec(favoriteRecipes);
-    }
-    if (favoriteColor === blackHeartIcon) {
-      setFavoriteColor(whiteHeartIcon);
-      const removeFavote = fvtRec.filter(({ id }) => id !== drinkId);
-      setFvtRec(removeFavote);
-    }
-  };
-
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-drink-datails">
@@ -115,8 +101,7 @@ export default function RecipeDrinkDetails({ match }) {
           <h1 data-testid="recipe-title">{d.strDrink}</h1>
           <ShareAndFavorite
             url={ match.url }
-            handleFavoriteColor={ handleFavoriteColor }
-            favoriteColor={ favoriteColor }
+            recipeId={ drinkId }
           />
         </div>
         <p className="details" data-testid="recipe-category">{d.strAlcoholic}</p>
