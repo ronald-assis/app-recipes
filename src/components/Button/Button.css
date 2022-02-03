@@ -1,0 +1,11 @@
+.main-button {
+  background-color: #6ce34f;
+  bottom: 0;
+  font-size: 29px;
+  height: 76px;
+  left: 10px;
+  line-height: 34px;
+  margin-bottom: 5px;
+  position: fixed;
+  width: 340px;
+}
