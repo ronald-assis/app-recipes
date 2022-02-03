@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './DetailCards.css';
+import { Link } from 'react-router-dom'; // ADD LINK
 import blackHeart from '../../images/blackHeartIcon.svg';
 import shareIcon from '../../images/shareIcon.svg';
 
@@ -16,28 +17,36 @@ function createTags(list, index) {
   ));
 }
 
-// the following props are necessary: 'category', 'name', 'img', 'index'.
-// you WILL need to pass 'data' && 'tags' props in the DoneRecipes page
-// and the inverse goes to the FavoritesRecipes page
-function DetailCards({ category, name, img, index, data, tags }) {
+function DetailCards({ category, name, img, index, data, tags, type, id }) {
   const icons = (
     <div className="buttons">
-      <img
-        data-testid={ `${index}-horizontal-share-btn` }
-        src={ shareIcon }
-        alt="Share Icon"
-      />
-      <img src={ blackHeart } alt="Black Heart" />
+      <button // turn img to button
+        type="button"
+      >
+        <img
+          data-testid={ `${index}-horizontal-share-btn` }
+          id={ `${index}-horizontal-share-btn` } // Add ID
+          src={ shareIcon }
+          alt="Share Icon"
+          type="button"
+        />
+        <img src={ blackHeart } alt="Black Heart" />
+      </button>
     </div>);
 
   const miniShareIcon = (
     <div style={ { position: 'relative' } }>
-      <img
-        data-testid={ `${index}-horizontal-share-btn` }
-        className="float"
-        src={ shareIcon }
-        alt="Share Icon"
-      />
+      <button // turn img to button
+        type="button"
+      >
+        <img
+          data-testid={ `${index}-horizontal-share-btn` }
+          id={ `${index}-horizontal-share-btn` } // Add ID
+          className="float"
+          src={ shareIcon }
+          alt="Share Icon"
+        />
+      </button>
     </div>
   );
 
@@ -56,12 +65,14 @@ function DetailCards({ category, name, img, index, data, tags }) {
       {details && miniShareIcon}
       <div className="detail-card">
         <div className="image-container">
-          <img
-            className="image"
-            data-testid={ `${index}-horizontal-image` }
-            src={ img }
-            alt="dogecoin"
-          />
+          <Link to={ `/${type}s/${id}` }>
+            <img
+              className="image"
+              data-testid={ `${index}-horizontal-image` }
+              src={ img }
+              alt="dogecoin"
+            />
+          </Link>
         </div>
         <div className="info">
           <div
@@ -70,7 +81,9 @@ function DetailCards({ category, name, img, index, data, tags }) {
           >
             {category}
           </div>
-          <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
+          <Link to={ `/${type}s/${id}` }>
+            <h2 data-testid={ `${index}-horizontal-name` }>{name}</h2>
+          </Link>
           {details ? info : icons}
         </div>
       </div>
@@ -83,6 +96,8 @@ DetailCards.propTypes = {
   name: PropTypes.string.isRequired,
   img: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   tags: PropTypes.arrayOf(PropTypes.string.isRequired),
   data: PropTypes.string,
 };

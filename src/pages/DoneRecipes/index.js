@@ -69,27 +69,36 @@ export default function DoneRecipes() {
           doneDate,
           nationality,
           type,
+          id,
           alcoholicOrNot,
         }, index) => {
           if (type === 'food') {
-            return (<DetailCards
+            return (
+              <DetailCards
+                img={ image }
+                category={ `${nationality} - ${category}` }
+                name={ name }
+                tags={ tags }
+                index={ index }
+                key={ name + index }
+                data={ doneDate }
+                id={ id }
+                type={ type }
+              />
+            );
+          }
+          return (
+            <DetailCards
               img={ image }
-              category={ `${nationality} - ${category}` }
+              category={ alcoholicOrNot }
               name={ name }
-              tags={ tags }
               index={ index }
               key={ name + index }
               data={ doneDate }
-            />);
-          }
-          return (<DetailCards
-            img={ image }
-            category={ alcoholicOrNot }
-            name={ name }
-            index={ index }
-            key={ name + index }
-            data={ doneDate }
-          />);
+              id={ id }
+              type={ type }
+            />
+          );
         })}
       </div>
     </div>
