@@ -26,6 +26,14 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
     setIsSharedURL(true);
   }
 
+  function removeFromFavorites() {
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+    const newRecipes = favoriteRecipes.filter((recipe) => recipe.id !== id);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(newRecipes));
+    const element = document.getElementById(id);
+    element.remove();
+  }
+
   const icons = (
     <div className="buttons">
       <button
@@ -39,8 +47,20 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
           alt="Share Icon"
           type="button"
         />
-        <img src={ blackHeart } alt="Black Heart" />
       </button>
+
+      <button
+        type="button"
+        onClick={ removeFromFavorites }
+      >
+        <img
+          data-testid={ `${index}-horizontal-favorite-btn` }
+          src={ blackHeart }
+          alt="Black Heart"
+          type="button"
+        />
+      </button>
+      {isSharedURL && <span>Link copied!</span>}
     </div>);
 
   const miniShareIcon = (
@@ -74,7 +94,7 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
   return (
     <div>
       {details && miniShareIcon}
-      <div className="detail-card">
+      <div className="detail-card" id={ id }>
         <div className="image-container">
           <Link to={ `/${type}s/${id}` }>
             <img
