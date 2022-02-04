@@ -5,7 +5,7 @@ export default function FavoriteRecipes() {
   return (
     <div className="favorite-recipes app-recipes">
       <Header title="Favorite Recipes" showSearchButton={ false } />
-      <h1 data-testid="page-title">Favorite Recipes</h1>
+      <h1 data-testid="page-title">a</h1>
     </div>
   );
 }
