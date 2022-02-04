@@ -109,7 +109,7 @@ export default function RecipesInProgress({ match }) {
         setFavoriteColor(blackHeartIcon);
       }
     });
-  }, [recipe, setFavoriteObj, fvtRec]);
+  }, [recipe, setFavoriteObj, fvtRec, currTypes, recipesId, setFavoriteColor]);
 
   return (
     <div className="recipe-in-progress">
