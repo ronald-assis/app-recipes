@@ -10,7 +10,6 @@ export default function RecipeInProgressCard({
   img, name, category, instructions, ingredients, id, title,
   tags, nationality = '', alcoholic = '',
 }) {
-  console.log(tags, nationality, alcoholic, category);
   const [disabled, setDisabled] = useState(true);
   const { checkedIngre, setCheckedIngre,
     doneRecipes, setDoneRecipes,
