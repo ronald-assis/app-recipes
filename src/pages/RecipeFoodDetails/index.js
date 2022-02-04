@@ -173,6 +173,7 @@ export default function RecipeFoodDetails({ match }) {
           title={ buttonTitle }
           dataTestid="start-recipe-btn"
           handleClick={ handleClick }
+          disabled={ false }
         />
       </div>
 

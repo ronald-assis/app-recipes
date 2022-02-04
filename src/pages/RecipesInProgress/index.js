@@ -6,6 +6,23 @@ import globalFetch from '../../services/globalFetch';
 import RecipeInProgressCard from '../../components/RecipeInProgressCard';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 
+const types = {
+  meals: {
+    recipesByIdEndPoint: 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=',
+    trumbTypes: 'strMealThumb',
+    nameTypes: 'strMeal',
+    idTypes: 'idMeal',
+    title: 'food',
+  },
+  drinks: {
+    recipesByIdEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=',
+    trumbTypes: 'strDrinkThumb',
+    nameTypes: 'strDrink',
+    idTypes: 'idDrink',
+    title: 'drink',
+  },
+};
+
 const createCard = (list, currTypes, ingredients) => {
   const { trumbTypes, nameTypes, idTypes } = currTypes;
   return list.map(({
@@ -41,23 +58,6 @@ export default function RecipesInProgress({ match }) {
   const pageUrl = match.url;
   const newUrl = pageUrl.split('/in-progress')[0];
 
-  const types = {
-    meals: {
-      recipesByIdEndPoint: `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipesId}`,
-      trumbTypes: 'strMealThumb',
-      nameTypes: 'strMeal',
-      idTypes: 'idMeal',
-      title: 'food',
-    },
-    drinks: {
-      recipesByIdEndPoint: `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipesId}`,
-      trumbTypes: 'strDrinkThumb',
-      nameTypes: 'strDrink',
-      idTypes: 'idDrink',
-      title: 'drink',
-    },
-  };
-
   const [strIngredient, setStrIngredient] = useState([]);
   const [recipe, setRecipe] = useState([]);
   const {
@@ -69,19 +69,17 @@ export default function RecipesInProgress({ match }) {
   const currResult = pathname.endsWith(
     `drinks/${recipesId}/in-progress`,
   ) ? 'drinks' : 'meals';
-  // const toLocalStorage = pathname.endsWith(
-  //   `drinks/${recipesId}/in-progress`,
-  // ) ? 'drink' : 'food';
   const currTypes = types[currResult];
 
   useEffect(() => {
     const { recipesByIdEndPoint } = currTypes;
-    globalFetch(recipesByIdEndPoint)
+    globalFetch(recipesByIdEndPoint + recipesId)
       .then(({ [currResult]: array }) => (
         setRecipe(array)
       ));
+
     setUrlToBeCopied(newUrl);
-  }, []);
+  }, [currResult, recipesId, currTypes, newUrl, setUrlToBeCopied]);
 
   useEffect(() => {
     const initialStrIngredient = [];
@@ -124,7 +122,6 @@ export default function RecipesInProgress({ match }) {
   return (
     <div className="recipe-in-progress">
       <h1>Recipe in progress</h1>
-      {/* {console.log(strIngredient)} */}
       {createCard(recipe, currTypes, strIngredient)}
     </div>
   );

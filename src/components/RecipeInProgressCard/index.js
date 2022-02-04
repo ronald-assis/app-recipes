@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 import ShareAndFavorite from '../ShareAndFavorite';
 import Button from '../Button';
@@ -9,7 +10,8 @@ export default function RecipeInProgressCard({
   img, name, category, instructions, ingredients, id,
 }) {
   const { checkedIngre, setCheckedIngre } = useContext(RecipesContext);
-  // const [checkCompleted, setCheckCompleted] = useState(false);
+  const { push } = useHistory();
+  const [disabled, setDisabled] = useState(true);
 
   const checkCompleted = (ingredient) => checkedIngre.some((i) => i === ingredient);
 
@@ -21,6 +23,18 @@ export default function RecipeInProgressCard({
       const newCheckedIngre = checkedIngre.filter((a) => a !== target.name);
       setCheckedIngre(newCheckedIngre);
     }
+  };
+
+  useEffect(() => {
+    if (checkedIngre.length === ingredients.length) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [ingredients, checkedIngre]);
+
+  const handleClick = () => {
+    push('/done-recipes');
   };
 
   return (
@@ -44,14 +58,17 @@ export default function RecipeInProgressCard({
           {ingredients.map((ingredient, i) => {
             const isChecked = checkCompleted(ingredient);
             return (
-              <label key={ i } htmlFor={ ingredient }>
+              <label
+                key={ i }
+                htmlFor={ ingredient }
+                data-testid={ `${i}-ingredient-step` }
+              >
                 <input
                   type="checkbox"
                   name={ ingredient }
                   id={ ingredient }
                   checked={ isChecked }
                   onChange={ handleChange }
-                  data-testid={ `${i}-ingredient-step` }
                 />
                 {' '}
                 {isChecked ? (
@@ -75,7 +92,8 @@ export default function RecipeInProgressCard({
       <Button
         title="Finish Recipe"
         dataTestid="finish-recipe-btn"
-        handleClick={ () => console.log('clicou') }
+        disabled={ disabled }
+        handleClick={ handleClick }
       />
     </div>
   );

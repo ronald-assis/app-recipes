@@ -154,6 +154,7 @@ export default function RecipeDrinkDetails({ match }) {
           title={ buttonTitle }
           dataTestid="start-recipe-btn"
           handleClick={ handleClick }
+          disabled={ false }
         />
       </div>
 
