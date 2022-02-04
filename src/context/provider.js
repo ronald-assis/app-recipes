@@ -5,13 +5,13 @@ import useLocalStorage from '../hooks/useLocalStorage';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 const inProgressRecipes = { meals: {}, cocktails: {} };
-const favoriteRecipes = [];
-const check = [];
+const initialArray = [];
 
 function RecipesProvider({ children }) {
   const [inProg, setInProg] = useLocalStorage('inProgressRecipes', inProgressRecipes);
-  const [fvtRec, setFvtRec] = useLocalStorage('favoriteRecipes', favoriteRecipes);
-  const [checkedIngre, setCheckedIngre] = useLocalStorage('checkedIngre', check);
+  const [doneRecipes, setDoneRecipes] = useLocalStorage('doneRecipes', initialArray);
+  const [fvtRec, setFvtRec] = useLocalStorage('favoriteRecipes', initialArray);
+  const [checkedIngre, setCheckedIngre] = useLocalStorage('checkedIngre', initialArray);
 
   const [currCategory, setCurrCategory] = useState('');
   const [searchURL, setSearchURL] = useState('');
@@ -42,6 +42,8 @@ function RecipesProvider({ children }) {
     setUrlToBeCopied,
     checkedIngre,
     setCheckedIngre,
+    doneRecipes,
+    setDoneRecipes,
   };
   return (
     <RecipesContext.Provider value={ context }>

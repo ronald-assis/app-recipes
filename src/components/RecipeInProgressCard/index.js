@@ -7,11 +7,15 @@ import Button from '../Button';
 import './RecipeInProgressCard.css';
 
 export default function RecipeInProgressCard({
-  img, name, category, instructions, ingredients, id,
+  img, name, category, instructions, ingredients, id, title,
+  tags, nationality, alcoholic,
 }) {
-  const { checkedIngre, setCheckedIngre } = useContext(RecipesContext);
-  const { push } = useHistory();
   const [disabled, setDisabled] = useState(true);
+  const { checkedIngre, setCheckedIngre,
+    // inProg, setInProg,
+    doneRecipes, setDoneRecipes,
+  } = useContext(RecipesContext);
+  const { push } = useHistory();
 
   const checkCompleted = (ingredient) => checkedIngre.some((i) => i === ingredient);
 
@@ -34,6 +38,26 @@ export default function RecipeInProgressCard({
   }, [ingredients, checkedIngre]);
 
   const handleClick = () => {
+    const data = new Date();
+    const dataFormatada = (
+      `${data.getDate()}/${(data.getMonth() + 1)}/${data.getFullYear()}`);
+    const done = {
+      id,
+      type: title,
+      nationality: nationality || '',
+      category: category || '',
+      alcoholicOrNot: alcoholic || '',
+      name,
+      image: img,
+      doneDate: dataFormatada,
+      tags: [tags],
+    };
+    setCheckedIngre([]);
+    setDoneRecipes([
+      ...doneRecipes,
+      done,
+    ]);
+
     push('/done-recipes');
   };
 
@@ -51,7 +75,9 @@ export default function RecipeInProgressCard({
         <ShareAndFavorite recipeId={ id } />
       </div>
 
-      <p className="details" data-testid="recipe-category">{category}</p>
+      <p className="details" data-testid="recipe-category">
+        {category === '' && alcoholic}
+      </p>
       <div className="ingredients details">
         <h3>Ingredients</h3>
         <div className="ingredients-step">
@@ -106,4 +132,8 @@ RecipeInProgressCard.propTypes = {
   category: PropTypes.string.isRequired,
   ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
   instructions: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  nationality: PropTypes.string.isRequired,
+  alcoholic: PropTypes.string.isRequired,
 };

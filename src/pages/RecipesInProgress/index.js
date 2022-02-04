@@ -24,32 +24,24 @@ const types = {
 };
 
 const createCard = (list, currTypes, ingredients) => {
-  const { trumbTypes, nameTypes, idTypes } = currTypes;
+  const { trumbTypes, nameTypes, idTypes, title } = currTypes;
   return list.map(({
     [trumbTypes]: img, [nameTypes]: name, [idTypes]: id,
-    strAlcoholic, strCategory, strInstructions,
+    strAlcoholic, strCategory, strInstructions, strTags, strArea,
   }, i) => (
-    strAlcoholic ? (
-      <RecipeInProgressCard
-        key={ i + name }
-        id={ id }
-        img={ img }
-        name={ name }
-        category={ strAlcoholic }
-        ingredients={ ingredients }
-        instructions={ strInstructions }
-      />
-    ) : (
-      <RecipeInProgressCard
-        key={ i + name }
-        id={ id }
-        img={ img }
-        name={ name }
-        category={ strCategory }
-        ingredients={ ingredients }
-        instructions={ strInstructions }
-      />
-    )
+    <RecipeInProgressCard
+      key={ i + name }
+      id={ id }
+      img={ img }
+      name={ name }
+      title={ title }
+      category={ strCategory }
+      alcoholic={ strAlcoholic }
+      ingredients={ ingredients }
+      instructions={ strInstructions }
+      tags={ strTags }
+      nationality={ strArea }
+    />
   ));
 };
 
