@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import RecipesContext from '../../context/context';
 import ShareAndFavorite from '../ShareAndFavorite';
 import Button from '../Button';
 import './RecipeInProgressCard.css';
 
 export default function RecipeInProgressCard({
-  img, name, category, instructions, id, ingredients,
+  img, name, category, instructions, ingredients, id,
 }) {
-  // console.log(match);
+  const { checkedIngre, setCheckedIngre } = useContext(RecipesContext);
+  // const [checkCompleted, setCheckCompleted] = useState(false);
+
+  const checkCompleted = (ingredient) => checkedIngre.some((i) => i === ingredient);
+
+  const handleChange = ({ target }) => {
+    const ingredientsValidation = checkedIngre.some((i) => i === target.name);
+    if (!ingredientsValidation) {
+      setCheckedIngre((ps) => [...ps, target.name]);
+    } else {
+      const newCheckedIngre = checkedIngre.filter((a) => a !== target.name);
+      setCheckedIngre(newCheckedIngre);
+    }
+  };
 
   return (
     <div className="recipes-in-progress-card">
@@ -27,19 +41,28 @@ export default function RecipeInProgressCard({
       <div className="ingredients details">
         <h3>Ingredients</h3>
         <div className="ingredients-step">
-          {ingredients.map((ingredient, i) => (
-            <label key={ i } htmlFor={ ingredient }>
-              <input
-                type="checkbox"
-                name=""
-                id={ ingredient }
-                data-testid={ `${i}-ingredient-step` }
-              />
-              {' '}
-              <span>{ingredient}</span>
-            </label>
+          {ingredients.map((ingredient, i) => {
+            const isChecked = checkCompleted(ingredient);
+            return (
+              <label key={ i } htmlFor={ ingredient }>
+                <input
+                  type="checkbox"
+                  name={ ingredient }
+                  id={ ingredient }
+                  checked={ isChecked }
+                  onChange={ handleChange }
+                  data-testid={ `${i}-ingredient-step` }
+                />
+                {' '}
+                {isChecked ? (
+                  <s>{ingredient}</s>
+                ) : (
+                  <span>{ingredient}</span>
 
-          ))}
+                )}
+              </label>
+            );
+          })}
         </div>
       </div>
       <div className="intructions details">

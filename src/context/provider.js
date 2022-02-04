@@ -6,10 +6,13 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 
 const inProgressRecipes = { meals: {}, cocktails: {} };
 const favoriteRecipes = [];
+const check = [];
 
 function RecipesProvider({ children }) {
   const [inProg, setInProg] = useLocalStorage('inProgressRecipes', inProgressRecipes);
   const [fvtRec, setFvtRec] = useLocalStorage('favoriteRecipes', favoriteRecipes);
+  const [checkedIngre, setCheckedIngre] = useLocalStorage('checkedIngre', check);
+
   const [currCategory, setCurrCategory] = useState('');
   const [searchURL, setSearchURL] = useState('');
   const [exploreURL, setExploreURL] = useState('');
@@ -37,6 +40,8 @@ function RecipesProvider({ children }) {
     setFavoriteColor,
     urlToBeCopied,
     setUrlToBeCopied,
+    checkedIngre,
+    setCheckedIngre,
   };
   return (
     <RecipesContext.Provider value={ context }>

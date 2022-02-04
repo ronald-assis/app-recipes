@@ -37,7 +37,7 @@ export default function RecipeFoodDetails({ match }) {
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
     setUrlToBeCopied(pageURL);
-  }, [foodId]);
+  }, [foodId, pageURL, setUrlToBeCopied]);
 
   useEffect(() => {
     const initialStrIngredient = [];
