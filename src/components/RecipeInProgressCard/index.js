@@ -12,7 +12,6 @@ export default function RecipeInProgressCard({
 }) {
   const [disabled, setDisabled] = useState(true);
   const { checkedIngre, setCheckedIngre,
-    // inProg, setInProg,
     doneRecipes, setDoneRecipes,
   } = useContext(RecipesContext);
   const { push } = useHistory();
@@ -52,6 +51,9 @@ export default function RecipeInProgressCard({
       doneDate: dataFormatada,
       tags: [tags],
     };
+
+    // quando a pessoa finaliza a receita, o botão de "Continue Recipe" continua aparecendo ao invés de Start Recipe.
+
     setCheckedIngre([]);
     setDoneRecipes([
       ...doneRecipes,
