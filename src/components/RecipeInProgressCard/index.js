@@ -8,8 +8,9 @@ import './RecipeInProgressCard.css';
 
 export default function RecipeInProgressCard({
   img, name, category, instructions, ingredients, id, title,
-  tags, nationality, alcoholic,
+  tags, nationality = '', alcoholic = '',
 }) {
+  console.log(tags, nationality, alcoholic, category);
   const [disabled, setDisabled] = useState(true);
   const { checkedIngre, setCheckedIngre,
     doneRecipes, setDoneRecipes,
@@ -49,7 +50,7 @@ export default function RecipeInProgressCard({
       name,
       image: img,
       doneDate: dataFormatada,
-      tags: [tags],
+      tags: tags === null ? [] : [tags],
     };
 
     // quando a pessoa finaliza a receita, o botão de "Continue Recipe" continua aparecendo ao invés de Start Recipe.
@@ -78,7 +79,7 @@ export default function RecipeInProgressCard({
       </div>
 
       <p className="details" data-testid="recipe-category">
-        {category === '' && alcoholic}
+        {category === '' ? alcoholic : category}
       </p>
       <div className="ingredients details">
         <h3>Ingredients</h3>
