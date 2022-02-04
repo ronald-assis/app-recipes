@@ -3,7 +3,7 @@ import Header from '../../components/Header';
 import DetailCards from '../../components/DetailCards';
 
 export default function DoneRecipes() {
-  let doneRecipesData = [
+  const doneRecipesData = [ // Test variables
     {
       id: '52771',
       type: 'food',
@@ -29,8 +29,8 @@ export default function DoneRecipes() {
   ];
 
   localStorage.setItem('doneRecipes', JSON.stringify(doneRecipesData));
-  const doneRecipesGet = localStorage.getItem('doneRecipes');
-  doneRecipesData = JSON.parse(doneRecipesGet);
+  const doneRecipesGet = JSON.parse(localStorage.getItem('doneRecipes'));
+  const doneRecipesArray = Array.isArray(doneRecipesGet) ? doneRecipesGet : [];
 
   const [filter, setFilter] = React.useState('all');
   const filters = ['all', 'food', 'drink'];
@@ -57,7 +57,7 @@ export default function DoneRecipes() {
 
       </div>
       <div>
-        {doneRecipesData
+        {doneRecipesArray
           .filter((value) => value.type === filter || filter === 'all')
           .map(({
             image,
