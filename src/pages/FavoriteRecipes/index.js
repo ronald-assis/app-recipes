@@ -3,8 +3,8 @@ import Header from '../../components/Header';
 import DetailCards from '../../components/DetailCards';
 
 export default function FavoriteRecipes() {
-  const favoriteRecipes = localStorage.getItem('favoriteRecipes');
-  const favoriteRecipesJSON = JSON.parse(favoriteRecipes);
+  const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes'));
+  const favoriteRecipesJSON = Array.isArray(favoriteRecipes) ? favoriteRecipes : [];
 
   const [filter, setFilter] = React.useState('all');
   const filters = ['all', 'food', 'drink'];
