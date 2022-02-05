@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import RecipesContext from './context';
 import useLocalStorage from '../hooks/useLocalStorage';
+import useMainURL from '../hooks/useMainURL';
 
 const inProgressRecipes = { meals: {}, cocktails: {} };
 const favoriteRecipes = [];
@@ -9,17 +10,12 @@ const favoriteRecipes = [];
 function RecipesProvider({ children }) {
   const [inProg, setInProg] = useLocalStorage('inProgressRecipes', inProgressRecipes);
   const [fvtRec, setFvtRec] = useLocalStorage('favoriteRecipes', favoriteRecipes);
-  const [currCategory, setCurrCategory] = useState('');
+  const [mainURL, setMainURL] = useMainURL(false);
   const [searchURL, setSearchURL] = useState('');
-  const [exploreURL, setExploreURL] = useState('');
   const [isLoading, setLoading] = useState(false);
   const context = {
-    searchURL,
-    setSearchURL,
-    currCategory,
-    setCurrCategory,
-    exploreURL,
-    setExploreURL,
+    mainURL,
+    setMainURL,
     isLoading,
     setLoading,
     inProg,
