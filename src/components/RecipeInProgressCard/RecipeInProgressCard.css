@@ -1,0 +1,48 @@
+.recipes-in-progress-card {
+  align-items: start;
+  display: flex;
+  flex-flow: column;
+}
+
+.recipes-in-progress-card .details {
+  margin: 0 auto;
+  width: 95%;
+}
+
+.recipes-in-progress-card .illustration {
+  height: 155px;
+  width: 100%;
+}
+
+.recipes-in-progress-card .title-and-buttons {
+  align-items: center;
+  display: flex;
+  font-size: 14px;
+  height: 35px;
+  justify-content: space-between;
+}
+
+.recipes-in-progress-card p:nth-child( 3 ) {
+  color: darkgray;
+  margin: 0 auto 17px;
+  width: 95%;
+}
+
+.recipes-in-progress-card .ingredients {
+  display: flex;
+  flex-flow: column;
+}
+
+.recipes-in-progress-card .ingredients .ingredients-step {
+  background-color: #ececec;
+  display: flex;
+  flex-flow: column;
+  padding: 10px;
+}
+
+.recipes-in-progress-card .intructions p {
+  background-color: #ececec;
+  margin: 0 0 95px;
+  padding: 10px;
+  text-align: center;
+}
