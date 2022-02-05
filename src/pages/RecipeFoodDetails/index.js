@@ -2,8 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../../context/context';
 import globalFetch from '../../services/globalFetch';
-import shareIcon from '../../images/shareIcon.svg';
-import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import './RecipeDetails.css';
 import Button from '../../components/Button';
@@ -11,15 +9,19 @@ import ShareAndFavorite from '../../components/ShareAndFavorite';
 
 export default function RecipeFoodDetails({ match }) {
   const foodId = match.params.id;
-  const { inProg, setInProg, fvtRec, setFvtRec } = useContext(RecipesContext);
+  const pageURL = match.url;
   const [details, setDetails] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [strIngredient, setStrIngredient] = useState([]);
   const [buttonTitle, setButtonTitle] = useState('Start Recipe');
-  const [copiedMessage, setCopiedMessage] = useState(false);
-  const [favoriteColor, setFavoriteColor] = useState(whiteHeartIcon);
-  const [favoriteObj, setFavoriteObj] = useState({});
   const { push } = useHistory();
+  const {
+    inProg, setInProg,
+    fvtRec,
+    setFavoriteObj,
+    setFavoriteColor,
+    setUrlToBeCopied,
+  } = useContext(RecipesContext);
 
   const URL_RECOMMENDATIONS = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=';
   const RECOMMENDATIONS_NUMBER = 6;
@@ -34,7 +36,8 @@ export default function RecipeFoodDetails({ match }) {
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (
         setRecommendations(drinks.slice(0, RECOMMENDATIONS_NUMBER))));
-  }, [foodId]);
+    setUrlToBeCopied(pageURL);
+  }, [foodId, pageURL, setUrlToBeCopied]);
 
   useEffect(() => {
     const initialStrIngredient = [];
@@ -43,9 +46,8 @@ export default function RecipeFoodDetails({ match }) {
       for (let i = 1; i <= API_MAX_INGREDIENTS; i += 1) {
         const ingredient = meal[`strIngredient${i}`];
         const measure = meal[`strMeasure${i}`];
-        if (ingredient && measure) {
-          initialStrIngredient.push(`${ingredient} - ${measure}`);
-        }
+        if (ingredient === '') break;
+        initialStrIngredient.push(`${ingredient} - ${measure}`);
       }
       const fvtObj = {
         id: foodId,
@@ -59,7 +61,7 @@ export default function RecipeFoodDetails({ match }) {
       setFavoriteObj(fvtObj);
     });
     setStrIngredient(initialStrIngredient);
-  }, [details, foodId]);
+  }, [details, foodId, setFavoriteObj]);
 
   useEffect(() => {
     Object.keys(inProg.meals).some((mealid) => (
@@ -72,7 +74,7 @@ export default function RecipeFoodDetails({ match }) {
         setFavoriteColor(blackHeartIcon);
       }
     });
-  }, [foodId, fvtRec, inProg.meals]);
+  }, [foodId, fvtRec, inProg.meals, setFavoriteColor]);
 
   const createEmbedYouTubeURL = (url) => {
     const videoId = url.split('https://www.youtube.com/watch?v=')[1];
@@ -93,28 +95,6 @@ export default function RecipeFoodDetails({ match }) {
     push(`/foods/${foodId}/in-progress`);
   };
 
-  const shareButton = () => {
-    const URL = `http://localhost:3000${match.url}`;
-    navigator.clipboard.writeText(URL);
-    setCopiedMessage(true);
-  };
-
-  const handleFavoriteColor = () => {
-    if (favoriteColor === whiteHeartIcon) {
-      setFavoriteColor(blackHeartIcon);
-      const favoriteRecipes = [
-        ...fvtRec,
-        favoriteObj,
-      ];
-      setFvtRec(favoriteRecipes);
-    }
-    if (favoriteColor === blackHeartIcon) {
-      setFavoriteColor(whiteHeartIcon);
-      const removeFavote = fvtRec.filter(({ id }) => id !== foodId);
-      setFvtRec(removeFavote);
-    }
-  };
-
   return (
     details.map((d, i) => (
       <div key={ i } className="recipes-food-datails">
@@ -127,11 +107,7 @@ export default function RecipeFoodDetails({ match }) {
         <div className="foods details">
           <h1 data-testid="recipe-title">{d.strMeal}</h1>
           <ShareAndFavorite
-            shareButton={ shareButton }
-            shareIcon={ shareIcon }
-            copiedMessage={ copiedMessage }
-            handleFavoriteColor={ handleFavoriteColor }
-            favoriteColor={ favoriteColor }
+            recipeId={ foodId }
           />
         </div>
         <p className="details" data-testid="recipe-category">{d.strCategory}</p>
@@ -197,6 +173,7 @@ export default function RecipeFoodDetails({ match }) {
           title={ buttonTitle }
           dataTestid="start-recipe-btn"
           handleClick={ handleClick }
+          disabled={ false }
         />
       </div>
 
