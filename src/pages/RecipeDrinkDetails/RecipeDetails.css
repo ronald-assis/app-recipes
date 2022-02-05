@@ -34,6 +34,7 @@
 }
 
 .recipes-drink-datails p:nth-child( 3 ) {
+  color: darkgray;
   margin: 0 auto 17px;
   width: 95%;
 }
