@@ -1,8 +1,10 @@
 async function globalFetch(URL) {
   try {
-    return (await fetch(URL)).json();
-  } catch (erro) {
-    console.log(erro);
+    const requist = await fetch(URL);
+    const response = await requist.json();
+    return response;
+  } catch (e) {
+    console.log(e);
     return {};
   }
 }

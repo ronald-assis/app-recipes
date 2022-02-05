@@ -125,6 +125,7 @@ function MainRecipes() {
         setRecipes(Array.isArray(result) ? result.slice(0, optionsLength) : []);
       })
       .finally(() => setLoading(false));
+    return () => setRecipes([]);
   }, [mealsOrDrinks, setLoading, mainURL, defaultURL]);
 
   return (
