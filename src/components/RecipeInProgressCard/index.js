@@ -131,11 +131,18 @@ RecipeInProgressCard.propTypes = {
   img: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
   ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
   instructions: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  tags: PropTypes.string.isRequired,
-  nationality: PropTypes.string.isRequired,
-  alcoholic: PropTypes.string.isRequired,
+  category: PropTypes.string,
+  tags: PropTypes.string,
+  nationality: PropTypes.string,
+  alcoholic: PropTypes.string,
+};
+
+RecipeInProgressCard.defaultProps = {
+  category: '',
+  alcoholic: '',
+  tags: '',
+  nationality: '',
 };
