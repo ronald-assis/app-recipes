@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Header from '../../components/Header';
 import DetailCards from '../../components/DetailCards';
+import RecipesContext from '../../context/context';
 
 export default function DoneRecipes() {
-  const doneRecipesGet = JSON.parse(localStorage.getItem('doneRecipes'));
-  const doneRecipesArray = Array.isArray(doneRecipesGet) ? doneRecipesGet : [];
+  const { doneRecipes } = useContext(RecipesContext);
+  const doneRecipesArray = Array.isArray(doneRecipes) ? doneRecipes : [];
 
   const [filter, setFilter] = React.useState('all');
   const filters = ['all', 'food', 'drink'];
