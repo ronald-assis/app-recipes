@@ -2,6 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
+import ExploreButton from '../../components/ExploreButton';
 
 export default function Explore() {
   const history = useHistory();
@@ -14,19 +15,14 @@ export default function Explore() {
     const options = ['foods', 'drinks'];
 
     return options.map((option, index) => (
-      <div className="category" key={ index }>
-        <button
-          type="button"
-          id={ option }
-          data-testid={ `explore-${option}` }
-          onClick={ handleClick }
-        >
-          Explore
-          {' '}
-          {option.charAt(0).toUpperCase() + option.slice(1)}
-        </button>
-      </div>
-    ));
+      <ExploreButton
+        key={ option + index }
+        option={ option }
+        testId={ option }
+        index={ index }
+        onClick={ handleClick }
+        value={ `Explore ${option.charAt(0).toUpperCase()}${option.slice(1)}` }
+      />));
   };
 
   return (
@@ -34,7 +30,9 @@ export default function Explore() {
       <Header title="Explore" showSearchButton={ false } />
       <div className="main-recipes">
         <div className="main-categories">
-          {renderButtons()}
+          <div>
+            {renderButtons()}
+          </div>
         </div>
       </div>
       <Footer />
