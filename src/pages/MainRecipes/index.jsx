@@ -96,7 +96,6 @@ function MainRecipes() {
   useEffect(() => { // willUnmount
     console.log(); // this needs to be here, DON'T REMOVE
     return () => { setMainURL(); };
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // don't add anything here too
 
