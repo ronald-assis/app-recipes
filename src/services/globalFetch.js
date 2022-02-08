@@ -5,7 +5,7 @@ async function globalFetch(URL) {
     return response;
   } catch (e) {
     console.log(e);
-    return 'error';
+    return {};
   }
 }
 

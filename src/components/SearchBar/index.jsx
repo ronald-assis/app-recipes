@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import RecipesContext from '../../context/context';
+import './SearchBar.css';
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchType, setSearchType] = useState('ingredient');
   const location = useLocation();
-  const { setSearchURL } = useContext(RecipesContext);
-  const currPage = location.pathname.endsWith('foods') ? 'meal' : 'cocktail';
+  const { setMainURL } = useContext(RecipesContext);
+  const nameOfAPI = location.pathname.includes('foods') ? 'themealdb' : 'thecocktaildb';
 
   const handleChange = ({ target }) => {
     const { value, type } = target;
@@ -16,35 +17,21 @@ export default function SearchBar() {
   };
 
   const handleClick = () => {
-    let URL;
     if (searchType === 'first-letter' && searchTerm.length !== 1) {
       global.alert('Your search must have only 1 (one) character');
     }
-    switch (searchType) {
-    case 'ingredient':
-      URL = `https://www.the${currPage}db.com/api/json/v1/1/filter.php?i=${searchTerm}`;
-      break;
-    case 'name':
-      URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?s=${searchTerm}`;
-      break;
-    case 'first-letter':
-      URL = `https://www.the${currPage}db.com/api/json/v1/1/search.php?f=${searchTerm}`;
-      break;
-    default:
-      global.alert('Invalid Option');
-      break;
-    }
 
-    setSearchURL(URL);
+    setMainURL(searchType, nameOfAPI, searchTerm, true);
   };
 
   return (
-    <div>
+    <div className="main-search">
       <input
+        className="search-input"
         data-testid="search-input"
         onChange={ handleChange }
       />
-      <div onChange={ handleChange }>
+      <div className="search-options" onChange={ handleChange }>
         <label htmlFor="ingredient">
           <input
             data-testid="ingredient-search-radio"
@@ -52,6 +39,7 @@ export default function SearchBar() {
             name="search"
             id="ingredient"
             value="ingredient"
+            checked
           />
           Ingredient
         </label>
@@ -74,16 +62,15 @@ export default function SearchBar() {
             value="first-letter"
           />
           First Letter
-
         </label>
       </div>
       <button
+        className="search-button"
         data-testid="exec-search-btn"
         type="button"
         onClick={ handleClick }
       >
         Search
-
       </button>
     </div>
   );

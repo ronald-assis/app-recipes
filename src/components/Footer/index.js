@@ -7,17 +7,7 @@ import mealIcon from '../../images/mealIcon.svg';
 import './Footer.css';
 
 function Footer() {
-  const {
-    setCurrCategory,
-    setExploreURL,
-    setSearchURL,
-  } = useContext(RecipesContext);
-
-  const setDefaultState = () => {
-    setCurrCategory('');
-    setExploreURL('');
-    setSearchURL('');
-  };
+  const { setMainURL } = useContext(RecipesContext);
 
   return (
 
@@ -30,7 +20,7 @@ function Footer() {
         type="button"
         data-testid="drinks-bottom-btn"
         src={ drinkIcon }
-        onClick={ setDefaultState }
+        onClick={ () => setMainURL('default', 'thecocktaildb') }
       >
         <img src={ drinkIcon } alt="drinks-bottom" />
       </Link>
@@ -40,7 +30,6 @@ function Footer() {
         type="button"
         data-testid="explore-bottom-btn"
         src={ exploreIcon }
-        onClick={ setDefaultState }
       >
         <img src={ exploreIcon } alt="explore-bottom" />
       </Link>
@@ -50,7 +39,7 @@ function Footer() {
         type="button"
         data-testid="food-bottom-btn"
         src={ mealIcon }
-        onClick={ setDefaultState }
+        onClick={ () => setMainURL('default', 'themealdb') }
       >
         <img src={ mealIcon } alt="food-bottom" />
       </Link>

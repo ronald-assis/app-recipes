@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Cards from '../../components/Cards';
@@ -7,13 +7,12 @@ import globalFetch from '../../services/globalFetch';
 import RecipesContext from '../../context/context';
 
 export default function ExploreByIngredients() {
-  const { setCurrCategory, setExploreURL } = useContext(RecipesContext);
-  const { push } = useHistory();
+  const { setMainURL } = useContext(RecipesContext);
   const { pathname } = useLocation();
   const [ingredients, setIngredients] = useState([]);
   const location = pathname.includes('foods') ? 'foods' : 'drinks';
   const key = location === 'foods' ? 'meals' : 'drinks';
-  const endpoint = location === 'foods' ? 'meal' : 'cocktail';
+  const nameOfAPI = location === 'foods' ? 'themealdb' : 'thecocktaildb';
   const mealsURL = 'https://www.themealdb.com/api/json/v1/1/list.php?i=list';
   const drinksURL = 'https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list';
 
@@ -33,19 +32,16 @@ export default function ExploreByIngredients() {
       const name = location === 'foods'
         ? ingredient.strIngredient
         : ingredient.strIngredient1;
-      const URL = `https://www.the${endpoint}db.com/images/ingredients/${name}-Small.png`;
-      const exploreURL = `https://www.the${endpoint}db.com/api/json/v1/1/filter.php?i=${name}`;
+      const imgURL = `https://www.${nameOfAPI}.com/images/ingredients/${name}-Small.png`;
 
       return (
         <Cards
-          img={ URL }
+          img={ imgURL }
           name={ name }
           key={ index }
           index={ index }
           onClick={ () => {
-            setCurrCategory(name);
-            setExploreURL(exploreURL);
-            push(`/${location}`);
+            setMainURL('ingredient', nameOfAPI, name);
           } }
         />
       );

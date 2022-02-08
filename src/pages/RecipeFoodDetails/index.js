@@ -29,9 +29,8 @@ export default function RecipeFoodDetails({ match }) {
   useEffect(() => {
     const URL_FOODS = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${foodId}`;
     globalFetch(URL_FOODS)
-      .then((data) => {
-        if (data === 'error') return;
-        setDetails(data.meals);
+      .then(({ meals }) => {
+        setDetails(Array.isArray(meals) ? meals : []);
       });
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ drinks }) => (

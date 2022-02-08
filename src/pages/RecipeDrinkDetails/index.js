@@ -29,9 +29,8 @@ export default function RecipeDrinkDetails({ match }) {
   useEffect(() => {
     const URL_DRINKS = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drinkId}`;
     globalFetch(URL_DRINKS)
-      .then((data) => {
-        if (data === 'error') return;
-        setDetails(data.drinks);
+      .then(({ drinks }) => {
+        setDetails(Array.isArray(drinks) ? drinks : []);
       });
     globalFetch(URL_RECOMMENDATIONS)
       .then(({ meals }) => (

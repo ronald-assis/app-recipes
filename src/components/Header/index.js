@@ -13,14 +13,21 @@ export default function Header({ showSearchButton, title }) {
         <a
           href="/profile"
           data-testid="profile-top-btn"
+          className="header-tags"
           src={ profileIcon }
         >
           <img src={ profileIcon } alt="User button" />
         </a>
-        <h1 data-testid="page-title">{title}</h1>
+        <h1
+          className="header-tags"
+          data-testid="page-title"
+        >
+          {title}
+        </h1>
         { showSearchButton && (
           <button
             type="button"
+            className="header-tags"
             data-testid="search-top-btn"
             onClick={ () => setShowSearchInput(!showSearchInput) }
             src={ searchIcon }

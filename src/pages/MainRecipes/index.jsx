@@ -7,24 +7,20 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import RecipesContext from '../../context/context';
 
-const types = {
+const pageVariables = {
   meals: {
-    defaultEndPoint: 'https://www.themealdb.com/api/json/v1/1/search.php?s=',
-    selectedEndPoint: 'https://www.themealdb.com/api/json/v1/1/filter.php?c=',
-    categoriesEndPoint: 'https://www.themealdb.com/api/json/v1/1/list.php?c=list',
-    thumbType: 'strMealThumb',
-    nameType: 'strMeal',
-    idType: 'idMeal',
+    destructId: 'idMeal',
+    destructName: 'strMeal',
+    destructImg: 'strMealThumb',
+    nameOfAPI: 'themealdb',
     pathName: 'foods',
     title: 'Foods',
   },
   drinks: {
-    defaultEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s=',
-    selectedEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=',
-    categoriesEndPoint: 'https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list',
-    thumbType: 'strDrinkThumb',
-    nameType: 'strDrink',
-    idType: 'idDrink',
+    destructId: 'idDrink',
+    destructName: 'strDrink',
+    destructImg: 'strDrinkThumb',
+    nameOfAPI: 'thecocktaildb',
     pathName: 'drinks',
     title: 'Drinks',
   },
@@ -34,25 +30,15 @@ function notFoundAlert() {
   global.alert('Sorry, we haven\'t found any recipes for these filters.');
 }
 
-function createCards(list, currType, push, searchURL) {
-  const { thumbType, nameType, idType, pathName } = currType;
-  if (list.length === 1 && searchURL !== '') push(`/${pathName}/${list[0][idType]}`);
-  return list.map(({ [thumbType]: img, [nameType]: name, [idType]: id }, index) => (
-    <Cards
-      img={ img }
-      name={ name }
-      key={ name + id }
-      index={ index }
-      onClick={ () => push(`/${pathName}/${id}`) }
-    />
-  ));
-}
+function createCategories(params) {
+  const {
+    categories, currCategory, setCurrCategory, setMainURL, nameOfAPI,
+  } = params;
 
-function createCategories(list, setCurrCategory, currCategory, setExploreURL) {
-  const newList = [{ strCategory: 'All' }, ...list];
-  return newList.map(({ strCategory: category }) => {
-    const useCategory = (
-      category === currCategory || category === 'All') ? '' : category;
+  const newcategories = [{ strCategory: 'All' }, ...categories];
+
+  return newcategories.map(({ strCategory: category }) => {
+    const useCategory = (category === currCategory || category === 'All') ? '' : category;
 
     return (
       <input
@@ -62,7 +48,8 @@ function createCategories(list, setCurrCategory, currCategory, setExploreURL) {
         className="category"
         data-testid={ `${category}-category-filter` }
         onClick={ () => {
-          setExploreURL('');
+          const type = useCategory ? 'category' : 'default';
+          setMainURL(type, nameOfAPI, useCategory);
           setCurrCategory(useCategory);
         } }
       />
@@ -70,47 +57,75 @@ function createCategories(list, setCurrCategory, currCategory, setExploreURL) {
   });
 }
 
+function createCards(list, currType, push, goDirectly) {
+  const { destructImg, destructName, destructId, pathName } = currType;
+
+  if (list.length === 1 && goDirectly) push(`/${pathName}/${list[0][destructId]}`);
+
+  return list.map(({ [destructImg]: img, [destructName]: name, [destructId]: id }, i) => (
+    <Cards
+      img={ img }
+      name={ name }
+      key={ name + id }
+      index={ i }
+      onClick={ () => push(`/${pathName}/${id}`) }
+    />
+  ));
+}
+
 function MainRecipes() {
-  const { pathname } = useLocation();
   const { push } = useHistory();
+  const { pathname } = useLocation();
   const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
-  const currResult = pathname.endsWith('foods') ? 'meals' : 'drinks';
-  const currType = types[currResult];
-  const { title } = currType;
-  const { searchURL,
-    currCategory,
-    setCurrCategory,
-    exploreURL,
-    setExploreURL,
+  const [currCategory, setCurrCategory] = useState('');
+
+  const mealsOrDrinks = pathname.endsWith('foods') ? 'meals' : 'drinks';
+  const currPageVariables = pageVariables[mealsOrDrinks];
+  const { nameOfAPI, title } = currPageVariables;
+  const defaultURL = `https://www.${nameOfAPI}.com/api/json/v1/1/search.php?s=`;
+
+  const {
+    mainURL,
+    setMainURL,
     isLoading,
     setLoading,
   } = useContext(RecipesContext);
 
+  // thanks cypress, for this beatifull mess of a block...
+  useEffect(() => { // willUnmount
+    console.log(); // this needs to be here, DON'T REMOVE
+    return () => { setMainURL(); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // don't add anything here too
+
   useEffect(() => { // get categories
     const categoryLenght = 5;
-    const { categoriesEndPoint } = currType;
+    const categoriesEndPoint = `https://www.${nameOfAPI}.com/api/json/v1/1/list.php?c=list`;
 
     globalFetch(categoriesEndPoint)
-      .then(({ [currResult]: array }) => (
-        array ? setCategories(array.slice(0, categoryLenght)) : []
-      ));
-  }, [currType, currResult]);
+      .then(({ [mealsOrDrinks]: array }) => {
+        setCategories(Array.isArray(array) ? array.slice(0, categoryLenght) : []);
+      });
+    return () => setCurrCategory('');
+  }, [mealsOrDrinks, nameOfAPI]);
 
-  useEffect(() => { // get recipes with curr category or not
+  useEffect(() => { // get recipes
     const optionsLength = 12;
-    const { defaultEndPoint, selectedEndPoint } = currType;
-    let URL;
-    if (searchURL !== '') URL = searchURL;
-    else if (exploreURL !== '') URL = exploreURL;
-    else URL = currCategory ? `${selectedEndPoint}${currCategory}` : defaultEndPoint;
+    const URL = mainURL[0] || defaultURL;
     setLoading(true);
 
     globalFetch(URL)
-      .then(({ [currResult]: array }) => (array === null ? notFoundAlert()
-        : setRecipes(array.slice(0, optionsLength))))
+      .then(({ [mealsOrDrinks]: result }) => {
+        if (result === null) {
+          notFoundAlert();
+          return;
+        }
+        setRecipes(Array.isArray(result) ? result.slice(0, optionsLength) : []);
+      })
       .finally(() => setLoading(false));
-  }, [currType, currCategory, currResult, searchURL, exploreURL, setLoading]);
+    return () => setRecipes([]);
+  }, [mealsOrDrinks, setLoading, mainURL, defaultURL]);
 
   return (
     isLoading
@@ -120,10 +135,12 @@ function MainRecipes() {
           <Header title={ title } showSearchButton />
           <div className="main-recipes app-recipes">
             <div className="main-categories">
-              {createCategories(categories, setCurrCategory, currCategory, setExploreURL)}
+              {createCategories(
+                { categories, currCategory, setCurrCategory, setMainURL, nameOfAPI },
+              )}
             </div>
             <div className="main-list">
-              {createCards(recipes, currType, push, searchURL)}
+              {createCards(recipes, currPageVariables, push, mainURL[1])}
             </div>
           </div>
           <Footer />

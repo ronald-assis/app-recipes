@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import './Login.css';
+import { useHistory } from 'react-router-dom';
 
-function Login({ history }) {
+function Login() {
+  const { push } = useHistory();
   const [disabled, setDisabled] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,7 +22,7 @@ function Login({ history }) {
     localStorage.setItem('mealsToken', 1);
     localStorage.setItem('cocktailsToken', 1);
     localStorage.setItem('user', JSON.stringify({ email }));
-    history.push('/foods');
+    push('/foods');
   }
 
   return (
@@ -30,7 +31,7 @@ function Login({ history }) {
         <h1>Login</h1>
         <input
           type="email"
-          placeholder="email"
+          placeholder="Email"
           data-testid="email-input"
           className="input-field"
           value={ email }
@@ -38,7 +39,7 @@ function Login({ history }) {
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           data-testid="password-input"
           className="input-field"
           value={ password }
@@ -56,11 +57,5 @@ function Login({ history }) {
     </div>
   );
 }
-
-Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-};
 
 export default Login;

@@ -10,11 +10,11 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
   margin: 15px;
-  margin-top: 20px;
   row-gap: 10px;
 }
 
 .category {
-  background-color: gainsboro;
+  background-color: #c4c4c4;
+  border: 0;
   min-width: 31%;
 }
