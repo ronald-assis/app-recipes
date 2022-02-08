@@ -24,8 +24,8 @@ header .top-header .header-tags {
   margin-right: 95px;
 }
 
-header .top-header .header-tags:nth-child(3) {
- margin: 0;
+header .top-header .header-tags:nth-child( 3 ) {
+  margin: 0;
 }
 
 header .header-input {
