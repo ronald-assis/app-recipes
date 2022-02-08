@@ -1,10 +1,14 @@
+.done-recipes .top-header .header-tags {
+  font-size: 30px;
+  margin-right: 70px;
+}
+
 .detail-card {
   border: 1px solid black;
   border-radius: 10px;
   display: flex;
-  flex-flow: row;
-  justify-content: space-evenly;
-  overflow: hidden;
+  margin: 0 auto 19px;
+  width: 90%;
 }
 
 .image-container {
@@ -12,6 +16,8 @@
 }
 
 .image {
+  border-radius: 4px 0 0 4px;
+  height: 100%;
   width: 100%;
 }
 
@@ -24,14 +30,14 @@
 
 .info {
   flex-grow: 1;
-  padding-top: 10px;
+  padding: 6px 10px 6px 6px;
 }
 
 .tags-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 15px;
+  margin-top: 15px;
 
 }
 
@@ -44,7 +50,7 @@
 
 .float {
   position: absolute;
-  right: 10px;
+  right: 5px;
   top: 9px;
 }
 
