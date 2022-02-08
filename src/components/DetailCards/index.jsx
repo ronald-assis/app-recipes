@@ -93,7 +93,6 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
   const details = !(!data && !tags[0]);
   return (
     <div>
-      {details && miniShareIcon}
       <div className="detail-card" id={ id }>
         <div className="image-container">
           <Link to={ `/${type}s/${id}` }>
@@ -106,6 +105,7 @@ function DetailCards({ category, name, img, index, data, tags, type, id }) {
           </Link>
         </div>
         <div className="info">
+          {details && miniShareIcon}
           <div
             className="detail-category"
             data-testid={ `${index}-horizontal-top-text` }
