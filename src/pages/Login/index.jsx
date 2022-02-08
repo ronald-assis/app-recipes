@@ -31,7 +31,7 @@ function Login() {
         <h1>Login</h1>
         <input
           type="email"
-          placeholder="email"
+          placeholder="Email"
           data-testid="email-input"
           className="input-field"
           value={ email }
@@ -39,7 +39,7 @@ function Login() {
         />
         <input
           type="password"
-          placeholder="password"
+          placeholder="Password"
           data-testid="password-input"
           className="input-field"
           value={ password }

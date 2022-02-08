@@ -1,9 +1,29 @@
 .login {
   align-items: center;
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   height: 100vh;
-  justify-content: center;
-  margin: auto;
-  width: 100vw;
+  justify-content: space-evenly;
+}
+
+.login-input {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  row-gap: 20px;
+}
+
+.input-field {
+  font-size: large;
+  height: 40px;
+  padding: 0 15px;
+  width: 270px;
+}
+
+.login-button {
+  background-color: #6ce34f;
+  font-size: xx-large;
+  height: 10%;
+  width: 90%;
 }
