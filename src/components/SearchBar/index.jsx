@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import RecipesContext from '../../context/context';
+import './SearchBar.css';
 
 export default function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,13 +25,13 @@ export default function SearchBar() {
   };
 
   return (
-    <div>
+    <div className="main-search">
       <input
+        className="search-input"
         data-testid="search-input"
         onChange={ handleChange }
       />
-      {/* set this to be checked */}
-      <div onChange={ handleChange }>
+      <div className="search-options" onChange={ handleChange }>
         <label htmlFor="ingredient">
           <input
             data-testid="ingredient-search-radio"
@@ -61,16 +62,15 @@ export default function SearchBar() {
             value="first-letter"
           />
           First Letter
-
         </label>
       </div>
       <button
+        className="search-button"
         data-testid="exec-search-btn"
         type="button"
         onClick={ handleClick }
       >
         Search
-
       </button>
     </div>
   );
