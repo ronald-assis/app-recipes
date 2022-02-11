@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "@sheerun/mutationobserver-shim": "^0.3.3",
-    "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
@@ -26,12 +25,8 @@
     "websocket-extensions": ">=0.1.4"
   },
   "scripts": {
-    "cy": "cypress run",
-    "cy:open": "cypress open",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test-coverage": "react-scripts test --coverage --watchAll=false",
     "eject": "react-scripts eject",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js,.jsx",
     "lint:styles": "npx stylelint '**/*.css'"
@@ -52,9 +47,6 @@
     ]
   },
   "devDependencies": {
-    "clipboardy": "^2.1.0",
-    "cypress": "^9.3.1",
-    "cypress-multi-reporters": "^1.4.0",
     "eslint": "7.11.0",
     "eslint-config-trybe-frontend": "1.2.2",
     "eslint-plugin-react-hooks": "^4.2.0",
@@ -65,18 +57,5 @@
     "mochawesome-report-generator": "^5.1.0",
     "stylelint": "^13.8.0",
     "stylelint-order": "^4.1.0"
-  },
-  "jest": {
-    "coveragePathIgnorePatterns": [
-      "index.js",
-      "serviceWorker.js"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcovonly",
-      "text",
-      "clover",
-      "html"
-    ]
   }
 }
