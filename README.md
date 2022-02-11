@@ -18,7 +18,7 @@ Nesse projeto contém:
 
   <div>
     <h2>Tela de Login</h2>
-      ![Project Gif](./Login.gif)
+    <img width="360" height="640" scr="gifs/Login.gif">
   </div>
 
   ---
