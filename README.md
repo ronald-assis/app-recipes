@@ -17,6 +17,7 @@ Nesse projeto contém:
 ---
 
 ##Tela de Login
+
 ![Project Gif](./gifs/main-recipes.gif)
 
 ---
