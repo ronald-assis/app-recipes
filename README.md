@@ -21,6 +21,8 @@ Nesse projeto contém:
 ![Project Gif](./gifs/main-recipes.gif)
 
 ---
+<br>
+
 ## Tela principal de receitas de Comida e Bebida
   
 ![Project Gif](./gifs/main-recipes.gif)
