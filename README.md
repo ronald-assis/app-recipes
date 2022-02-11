@@ -16,7 +16,7 @@ Nesse projeto contém:
 
 ---
 
-  <div>
+  <div align="center">
     <h2>Tela de Login</h2>
     <img width="360" height="640" scr="gifs/Login.gif">
   </div>
