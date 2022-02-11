@@ -21,36 +21,30 @@ Nesse projeto contém:
 ![Project Gif](./gifs/main-recipes.gif)
 
 ---
+## Tela principal de receitas de Comida e Bebida
+  
+![Project Gif](./gifs/main-recipes.gif)
 
-  <details>
-    <summary>Tela principal de receitas de Comida e Bebida</summary>
-      ![Project Gif](./gifs/main-recipes.gif)
-  </details>
+---
 
-  ---
+## Tela de detalhes de uma receita - (Comida)
 
-  <details>
-    <summary>Tela de detalhes de uma receita - (Comida)</summary>
-      ![Project Gif](./gifs/food-details.gif)   
-  </details>
+![Project Gif](./gifs/food-details.gif)   
 
-  ---
+---
 
-  <details>
-    <summary>Tela de detalhes de uma receita - (Bebida)</summary>
-      ![Project Gif](./gifs/drink-details.gif)   
-  </details>
+## Tela de detalhes de uma receita - (Bebida)
 
-  ---
+![Project Gif](./gifs/drink-details.gif)   
 
-  <details>
-    <summary>Tela de receita em progresso - (Comida) </summary>
-      ![Project Gif](./gifs/food-in-progress.gif)
-  </details>
+---
 
-  ---
+## Tela de receita em progresso - (Comida)
 
-  <details>
-    <summary>Tela de receita em progresso - (Bedida) </summary>
-      ![Project Gif](./gifs/drink-in-progress.gif)
-  </details>
+![Project Gif](./gifs/food-in-progress.gif)
+
+---
+
+## Tela de receita em progresso - (Bedida)
+
+![Project Gif](./gifs/drink-in-progress.gif)
