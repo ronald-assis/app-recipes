@@ -16,10 +16,10 @@ Nesse projeto contém:
 
 ---
 
-    ##Tela de Login
-    ![Project Gif](./gifs/main-recipes.gif)
+##Tela de Login
+![Project Gif](./gifs/main-recipes.gif)
 
-  ---
+---
 
   <details>
     <summary>Tela principal de receitas de Comida e Bebida</summary>
