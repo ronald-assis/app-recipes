@@ -16,10 +16,10 @@ Nesse projeto contém:
 
 ---
 
-  <details>
-    <summary>Tela de Login</summary>
+  <div>
+    <h2>Tela de Login</h2>
       ![Project Gif](./gifs/Login.gif)
-  </details>
+  </div>
 
   ---
 
