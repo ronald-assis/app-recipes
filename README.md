@@ -12,7 +12,8 @@ Nesse projeto contém:
   - _React Hook useEffect_
   - Criar Hooks customizados
   - Validação de _PropsTypes_
-#vqv 🚀
+  - Trello decidir quem ficará com qual componente
+  - #vqv 🚀
 
 ---
 
