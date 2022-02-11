@@ -16,10 +16,8 @@ Nesse projeto contém:
 
 ---
 
-  <div align="center">
-    <h2>Tela de Login</h2>
-    <img width="360" height="640" scr="gifs/Login.gif">
-  </div>
+    ##Tela de Login
+    ![Project Gif](./gifs/main-recipes.gif)
 
   ---
 
